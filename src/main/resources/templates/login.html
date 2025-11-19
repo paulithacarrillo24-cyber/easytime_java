@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iniciar sesión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="logo">
+            <img src="https://via.placeholder.com/35/007bff/FFFFFF?text=ET" alt="EasyTime Logo"> 
+            EasyTime
+        </a>
+        <div class="nav-links">
+            <a href="/acceso">Acceso</a>
+            <a href="/registro">Registro</a>
+        </div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Iniciar sesión</h2>
+            <form action="/login" method="post">
+                <label for="username">Usuario:</label>
+                <input type="text" name="username" id="username" required autocomplete="username" />
+                
+                <label for="password">Contraseña:</label>
+                <input type="password" name="password" id="password" required autocomplete="current-password" />
+                
+                <button type="submit">Ingresar</button>
+            </form>
+
+            <div class="message error">
+                <p>Usuario o contraseña incorrectos</p>
+            </div>
+
+            <div id="logout-message" class="message success">
+                <p>Sesión cerrada correctamente</p>
+            </div>
+
+            <div id="denied-message" class="message denied">
+                <p>Acceso denegado. No tienes permisos para ver esta página.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Para ocultar mensajes después de 3 segundos
+        const messagesToHide = ["logout-message", "denied-message"]; 
+
+        setTimeout(function () {
+            messagesToHide.forEach(id => {
+                const mensaje = document.getElementById(id);
+                if (mensaje) {
+                    // Ocultar el mensaje usando el estilo CSS
+                    mensaje.style.display = "none";
+                }
+            });
+        }, 3000); // 3 segundos
+    </script>
+</body>
+</html>

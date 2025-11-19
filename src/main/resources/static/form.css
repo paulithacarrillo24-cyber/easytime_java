@@ -1,0 +1,49 @@
+/* Estilos de legibilidad */
+body { 
+    font-family: Arial, sans-serif; /* tipo de letra */
+}
+
+label { 
+    display: block; /* Muestra las etiquetas en su propia línea */
+    margin-top: 10px; /* Espacio superior para separar etiquetas */
+    font-weight: bold; /* Hace el texto de la etiqueta negrita */
+}
+
+/* Estilos para todos los campos de entrada de texto, email, teléfono y el selector */
+input[type="text"], 
+input[type="password"], 
+input[type="email"], 
+input[type="tel"], 
+select {
+    width: 100%; /* Ocupa todo el ancho disponible dentro de su contenedor */
+    padding: 8px; /* Relleno interno para mayor área de escritura */
+    margin: 5px 0 15px 0; /* Espacio vertical para separar los campos */
+    display: inline-block;
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 4px; /* Esquinas ligeramente redondeadas */
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
+}
+
+/* Estilos para el botón de envío */
+button[type="submit"] {
+    background-color: #4CAF50; /* Color de fondo verde */
+    color: white; /* Color de texto blanco */
+    padding: 10px 15px; /* Relleno interno */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Esquinas redondeadas */
+    cursor: pointer; /* Muestra el cursor de puntero al pasar el ratón */
+}
+
+/* Estilo al pasar el ratón sobre el botón de envío */
+button[type="submit"]:hover {
+    background-color: #45a049; /* Oscurece ligeramente el verde */
+}
+
+/* Estilos del contenedor del formulario */
+form { 
+    max-width: 400px; /* Limita el ancho máximo del formulario */
+    margin: 0 auto; /* Centra el formulario horizontalmente en la página */
+    padding: 20px; /* Relleno interior */
+    border: 1px solid #eee; /* Borde muy fino y claro */
+    border-radius: 5px; /* Esquinas redondeadas */
+}
