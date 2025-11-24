@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Servicios</title>
+</head>
+<body>
+    <h2>Servicio</h2>
+    <form method="post" th:action="@{/servicios/guardar}" th:object="${servicio}">
+
+        <label for="ID_SERVICIO">Código de barras:</label>
+        <input type="number" th:field="*{ID_SERVICIO}" required />
+
+        <label for="NOM_SERV">Nombre:</label>
+        <input type="text" th:field="*{NOM_SERV}" required />
+
+        <label for="DURACION_SERV">Duración:</label>
+        <input type="text" th:field="*{DURACION_SERV}" required />
+
+        <label for="EST_SERV">Estado:</label>
+        <select th:field="*{EST_SERV}" required>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+        </select>
+
+        <label for="DESCP_SERV">Descripción:</label>
+        <input type="text" th:field="*{DESCP_SERV}" required />
+
+        <label for="PRECIO_SERV">Precio:</label>
+        <input type="text" th:field="*{PRECIO_SERV}" required />
+
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+</html>

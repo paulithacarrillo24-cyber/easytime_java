@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Servicios</title>
+        <link rel="stylesheet" href="/css/estilos.css">
+    </head>
+
+    <body>
+        <h2>Lista de Servicios</h2>
+        <a th:href="@{/servicios/nuevo}">Nuevo Servicio</a>
+        <br><br>
+
+        <table>
+            <tr>
+                <th>Código de barras</th>
+                <th>Nombre</th>
+                <th>Duración</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+            </tr>
+
+            <tr th:each="s : ${servicios}">
+                <td th:text="${s.ID_SERVICIO}"></td>
+                <td th:text="${s.NOM_SERV}"></td>
+                <td th:text="${s.DURACION_SERV}"></td>
+                <td th:text="${s.EST_SERV}"></td>
+                <td th:text="${s.DESCP_SERV}"></td>
+                <td th:text="${s.PRECIO_SERV}"></td>
+                <!--Acciones-->
+                <td>
+                    <a th:href="@{/servicios/editar/{id}(id=${s.ID_SERVICIO})}">Editar</a>
+                    <a th:href="@{/servicios/eliminar/{id}(id=${s.ID_SERVICIO})}">Eliminar</a>
+                </td>
+            </tr>
+
+        </table>
+        <br>
+        <!--<form th:action="@{/logout}" method="post">
+            <button type="submit">Cerrar sesión</button>
+        </form>-->
+
+    </body>
+
+</html>
