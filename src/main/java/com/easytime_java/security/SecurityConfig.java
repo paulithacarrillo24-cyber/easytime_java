@@ -14,7 +14,7 @@ public class SecurityConfig {
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/servicios/**", "/css/**", "/js/**", "/img/**").permitAll() // abierto
+            .requestMatchers("/", "/servicios/**","/vista_servicios/**", "/css/**", "/js/**", "/img/**").permitAll() // abierto
             //.anyRequest().authenticated()
             .anyRequest().permitAll()
         )
