@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Productos</title>
+</head>
+<body>
+
+<h1>Productos</h1>
+
+<!-- Mensajes de éxito o error -->
+<div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<!-- Botón para crear nuevo producto -->
+<a th:href="@{/productos/nuevo}">➕ Nuevo Producto</a>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Caducidad</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Inventario</th>
+        <th>Creado</th>
+        <th>Actualizado</th>
+        <th>Acciones</th>
+        
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="p : ${productos}">
+    <td th:text="${p.idProducto}"></td>
+    <td th:text="${p.codigo}"></td>
+    <td th:text="${p.nombre}"></td>
+    <td th:text="${p.descripcion}"></td>
+    <td th:text="${p.caducidad}"></td>
+    <td th:text="${p.precio}"></td>
+    <td th:text="${p.cantidad}"></td>
+    <td th:text="${p.inventario != null ? p.inventario.nombre : 'Sin inventario'}"></td>
+    <td th:text="${p.createdAt}"></td>
+    <td th:text="${p.updatedAt}"></td>
+    <td>
+        <a th:href="@{/productos/editar/{id}(id=${p.idProducto})}">✏️ Editar</a>
+        <a th:href="@{/productos/eliminar/{id}(id=${p.idProducto})}"
+           onclick="return confirm('¿Seguro que deseas eliminar este producto?')">🗑️ Eliminar</a>
+    </td>
+</tr>
+    </tbody>
+</table>
+
+</body>
+</html>
