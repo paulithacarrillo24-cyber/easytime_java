@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Usuario</title>
+</head>
+<body>
+    <!-- El título cambia según si es nuevo o edición -->
+    <h1 th:text="${usuario.idUser == null} ? 'Nuevo usuario' : 'Editar usuario'">Nuevo usuario</h1>
+
+    <form th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
+
+        <!--  Campo idUser eliminado/comentado para que no se envíe -->
+        <!-- <input type="hidden" th:field="*{idUser}" /> -->
+
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required/><br/>
+
+        <label>Apellido:</label>
+        <input type="text" th:field="*{apellido}" required/><br/>
+
+        <label>Correo:</label>
+        <input type="email" th:field="*{correo}" required/><br/>
+
+        <label>Numero doc:</label>
+        <input type="number" th:field="*{documento}" required/><br/>
+
+        <label>Rol:</label>
+        <!--<input type="text" th:field="*{rol}" required/><br/>   ya no sirve porque lo puse despliegue--> 
+        <select th:field="*{rol}" required>
+            <option value="">Seleccione...</option>
+            <option value="Cliente" th:selected="${usuario.rol == 'Cliente'}">Cliente</option>
+            <option value="Jefe de Patio" th:selected="${usuario.rol == 'Jefe de Patio'}">Jefe de Patio</option>
+            <option value="Administrador" th:selected="${usuario.rol == 'Administrador'}">Administrador</option>
+        </select>
+
+        <br/>
+
+        <label>Tipo doc:</label>
+        <select th:field="*{tipoDoc}" required>
+            <option value="">Seleccione...</option>
+            <option value="Cedula Ciudadania" th:selected="${usuario.tipoDoc == 'Cedula Ciudadania'}">Cédula ciudadanía</option>
+            <option value="Cedula Extranjeria" th:selected="${usuario.tipoDoc == 'Cedula Extranjeria'}">Cédula extranjería</option>
+            <option value="Tarjeta Identidad" th:selected="${usuario.tipoDoc == 'Tarjeta Identidad'}">Tarjeta identidad</option>
+            <option value="PPT" th:selected="${usuario.tipoDoc == 'PPT'}">PPT</option>
+            <option value="Pasaporte" th:selected="${usuario.tipoDoc == 'Pasaporte'}">Pasaporte</option>
+            <option value="Otro" th:selected="${usuario.tipoDoc == 'Otro'}">Otro</option>
+        </select>
+        <br/>
+
+        <label>Telefono:</label>
+        <input type="text" th:field="*{telefono}" required/><br/>
+
+       <!---- <label>Estado:</label>
+        <select th:field="*{estado}">
+            <option th:value="true" th:selected="${usuario.estado == true}">true</option>
+            <option th:value="false" th:selected="${usuario.estado == false}">false</option>
+        </select> > -->
+        <br/><br/>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <br/>
+    <a href="/usuarios">Volver</a>
+</body>
+</html>
