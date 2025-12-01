@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Usuarios</title>
+        <link rel="stylesheet" href="/css/estilos.css">
+    </head>
+
+    <body>
+        <h2>Lista de Usuarios</h2>
+        <a th:href="@{/usuarios/nuevo}">Nuevo Usuario</a>
+        <br><br>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Tipo Documento</th>
+                <th>Número Documento</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+
+            <tr th:each="u : ${usuarios}">
+                <td th:text="${u.ID_USER}"></td>
+                <td th:text="${u.TIPO_DOC}"></td>
+                <td th:text="${u.NUMERO_DOC}"></td>
+                <td th:text="${u.NOM_USER}"></td>
+                <td th:text="${u.APE_USER}"></td>
+                <td th:text="${u.TEL_USER}"></td>
+                <td th:text="${u.correoUser}"></td>
+                <td th:text="${u.ROL_USER}"></td>
+                <td th:text="${u.EST_USER ? 'Activo' : 'Inactivo'}"></td>
+                <!-- Acciones -->
+                <td>
+                    <a th:href="@{/usuarios/editar/{id}(id=${u.ID_USER})}">Editar</a>
+                    <a th:href="@{/usuarios/eliminar/{id}(id=${u.ID_USER})}">Eliminar</a>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <div>
+            <form th:action="@{/home}" method="get">
+                <button type="submit">Volver al inicio</button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -12,17 +12,17 @@ import com.easytime_java.model.Servicio;
 import com.easytime_java.repository.ServicioRepository;
 
 @Controller
-public class ServiciosController {
+public class ServicioController {
 
     @Autowired
     private ServicioRepository repo;
 
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String redireccionRaiz() {
         return "redirect:/servicios";
     }
 
-    /*@GetMapping("/login")
+    @GetMapping("/login")
     public String login() {
         return "login";
     }
