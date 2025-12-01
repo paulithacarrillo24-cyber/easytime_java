@@ -16,7 +16,7 @@ public class ProductoService {
     }
 
     public List<Producto> listar() {
-        return repo.findAll();
+    return repo.findAllWithInventario();
     }
 
     public Producto obtenerPorId(Integer id) {

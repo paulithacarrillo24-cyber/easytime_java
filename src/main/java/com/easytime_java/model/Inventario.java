@@ -21,7 +21,7 @@ public class Inventario {
     @Column(name = "UPDATE_AT")
     private LocalDateTime updateAt;
 
-    @Column(name = "PROVEEDOR_ID_PROV", nullable = false)
+    @Column(name = "PROVEEDOR_ID_PROVEDOR", nullable = false)
     private Integer proveedorId;
 
     public Inventario() {}

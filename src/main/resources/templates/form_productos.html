@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}">Producto</title>
+</head>
+<body>
+
+<h1 th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}">Producto</h1>
+
+<!-- El formulario POSTea a /productos/guardar (tu controlador espera ese endpoint) -->
+<form th:action="@{/productos/guardar}" th:object="${producto}" method="post">
+
+    <!-- Mantener el id si existe (para edición) -->
+    <input type="hidden" th:field="*{idProducto}" />
+
+    <div>
+        <label>Código:</label><br>
+        <input type="text" th:field="*{codigo}" />
+    </div>
+    <br>
+
+    <div>
+        <label>Nombre:</label><br>
+        <input type="text" th:field="*{nombre}" />
+    </div>
+    <br>
+
+    <div>
+        <label>Descripción:</label><br>
+        <input type="text" th:field="*{descripcion}" />
+    </div>
+    <br>
+
+    <div>
+        <label>Caducidad:</label><br>
+        <!-- input type="date" produce yyyy-MM-dd, compatible con LocalDate -->
+        <input type="date" th:field="*{caducidad}" />
+    </div>
+    <br>
+
+    <div>
+        <label>Precio:</label><br>
+        <input type="text" th:field="*{precio}" />
+    </div>
+    <br>
+
+    <div>
+        <label>Cantidad:</label><br>
+        <input type="text" th:field="*{cantidad}" />
+    </div>
+    <br>
+
+    <div>
+        <label>Inventario asignado:</label><br>
+
+        <!-- Select desplegable: solo las opciones disponibles -->
+        <select th:field="*{inventario.idInventario}">
+            <option value="">-- Seleccione inventario --</option>
+            <option th:each="inv : ${inventarios}"
+                    th:value="${inv.idInventario}"
+                    th:text="${inv.nombreProdInve}">
+            </option>
+        </select>
+    </div>
+    <br>
+
+    <div>
+        <button type="submit" th:text="${producto.idProducto == null ? 'Crear' : 'Guardar Cambios'}">Guardar</button>
+        <a href="/adminproductos">Cancelar</a>
+    </div>
+</form>
+
+</body>
+</html>

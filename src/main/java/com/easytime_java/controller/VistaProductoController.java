@@ -1,5 +1,6 @@
 package com.easytime_java.controller;
 
+import com.easytime_java.Service.InventarioService;
 import com.easytime_java.Service.ProductoService;
 import com.easytime_java.model.Producto;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class VistaProductoController {
 
     private final ProductoService service;
+    private final InventarioService inventarioService;
 
-    public VistaProductoController(ProductoService service) {
+    public VistaProductoController(ProductoService service, InventarioService inventarioService) {
         this.service = service;
+        this.inventarioService = inventarioService;
     }
      
      // LISTAR
@@ -29,7 +32,8 @@ public class VistaProductoController {
     @GetMapping("/productos/nuevo")
     public String mostrarFormularioNuevo(Model model) {
     model.addAttribute("producto", new Producto());
-    return "form-producto";
+    model.addAttribute("inventarios", inventarioService.listar());
+    return "form_productos";
     }
 
     @PostMapping("/productos/guardar")
@@ -42,7 +46,8 @@ public class VistaProductoController {
     public String editarProducto(@PathVariable Integer id, Model model) {
     Producto producto = service.obtenerPorId(id);
     model.addAttribute("producto", producto);
-    return "form-producto";
+    model.addAttribute("inventarios", inventarioService.listar());
+    return "form_productos";
     }
 
     @GetMapping("/productos/eliminar/{id}")

@@ -42,7 +42,7 @@
     <td th:text="${p.caducidad}"></td>
     <td th:text="${p.precio}"></td>
     <td th:text="${p.cantidad}"></td>
-    <td th:text="${p.inventario != null ? p.inventario.nombre : 'Sin inventario'}"></td>
+    <td th:text="${p.inventario != null ? p.inventario.nombreProdInve : 'Sin inventario'}"></td>
     <td th:text="${p.createdAt}"></td>
     <td th:text="${p.updatedAt}"></td>
     <td>
@@ -53,6 +53,9 @@
 </tr>
     </tbody>
 </table>
+
+<br>
+<a href="/inventarios">Ver inventarios</a>
 
 </body>
 </html>
