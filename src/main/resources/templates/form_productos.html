@@ -8,21 +8,25 @@
 
 <h1 th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}">Producto</h1>
 
-<!-- El formulario POSTea a /productos/guardar (tu controlador espera ese endpoint) -->
-<form th:action="@{/productos/guardar}" th:object="${producto}" method="post">
+<!-- Muestra error general -->
+<div th:if="${errorMessage}" style="color:red;">
+    <p th:text="${errorMessage}"></p>
+</div>
 
-    <!-- Mantener el id si existe (para edición) -->
+<form th:action="@{/productos/guardar}" th:object="${producto}" method="post">
     <input type="hidden" th:field="*{idProducto}" />
 
     <div>
         <label>Código:</label><br>
         <input type="text" th:field="*{codigo}" />
+        <div th:if="${errorCodigo}" style="color:red;" th:text="${errorCodigo}"></div>
     </div>
     <br>
 
     <div>
         <label>Nombre:</label><br>
         <input type="text" th:field="*{nombre}" />
+        <div th:if="${errorNombre}" style="color:red;" th:text="${errorNombre}"></div>
     </div>
     <br>
 
@@ -34,7 +38,6 @@
 
     <div>
         <label>Caducidad:</label><br>
-        <!-- input type="date" produce yyyy-MM-dd, compatible con LocalDate -->
         <input type="date" th:field="*{caducidad}" />
     </div>
     <br>
@@ -53,8 +56,6 @@
 
     <div>
         <label>Inventario asignado:</label><br>
-
-        <!-- Select desplegable: solo las opciones disponibles -->
         <select th:field="*{inventario.idInventario}">
             <option value="">-- Seleccione inventario --</option>
             <option th:each="inv : ${inventarios}"

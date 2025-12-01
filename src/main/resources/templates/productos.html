@@ -15,6 +15,14 @@
 <!-- Botón para crear nuevo producto -->
 <a th:href="@{/productos/nuevo}">➕ Nuevo Producto</a>
 
+<!-- Filtro para listar productos -->
+<form action="/adminproductos" method="get" class="form-inline mb-3">
+    <input type="text" name="nombre" class="form-control mr-2" placeholder="Buscar producto...">
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+
+
 <table border="1">
     <thead>
     <tr>
@@ -56,6 +64,17 @@
 
 <br>
 <a href="/inventarios">Ver inventarios</a>
+<div class="acciones">
+    <!-- Botón para descargar PDF -->
+    <a class="btn btn-danger" href="/productos/pdf" target="_blank">
+        Descargar PDF
+    </a>
+
+    <!-- Botón para descargar Excel -->
+    <a class="btn btn-success" href="/productos/excel" target="_blank">
+        Descargar Excel
+    </a>
+</div>
 
 </body>
 </html>
