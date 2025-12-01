@@ -7,12 +7,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "usuario") // deja este nombre si tu tabla se llama usuario; si se llama "Usuario" o distinto, pon exactamente el nombre de tu BD
+@Table(name = "usuario")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_USER") // nombre del campo PK que aparece en tu captura
+    @Column(name = "ID_USER")
     private Integer idUser;
 
     @Column(name = "NOM_USER")
@@ -25,10 +25,10 @@ public class Usuario {
     private String correo;
 
     @Column(name = "EST_USER")
-    private Boolean estado=true;
+    private Boolean estado = true;
 
     @Column(name = "NUMERO_DOC")
-    private Long documento;
+    private String documento;   // <-- cambiado a String
 
     @Column(name = "ROL_USER")
     private String rol;
@@ -39,11 +39,9 @@ public class Usuario {
     @Column(name = "TEL_USER")
     private String telefono;
 
-    // Campo obligatorio en la BD
     @Column(name = "ID_ROL_USER", nullable = false)
     private Integer idRolUser;
 
-    // Campos de auditoría
     @CreationTimestamp
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -70,8 +68,8 @@ public class Usuario {
     public Boolean getEstado() { return estado; }
     public void setEstado(Boolean estado) { this.estado = estado; }
 
-    public Long getDocumento() { return documento; }
-    public void setDocumento(Long documento) { this.documento = documento; }
+    public String getDocumento() { return documento; }
+    public void setDocumento(String documento) { this.documento = documento; }
 
     public String getRol() { return rol; }
     public void setRol(String rol) { this.rol = rol; }

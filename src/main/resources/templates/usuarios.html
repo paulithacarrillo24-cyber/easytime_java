@@ -13,6 +13,18 @@
     <h1>Lista de usuarios</h1>
     <a href="/usuarios/nuevo">Nuevo usuario</a>
     <br/><br/>
+
+<!-- Formulario de búsqueda -->
+<form th:action="@{/usuarios/buscar}" method="get" style="margin-bottom:20px;">
+    <input type="text" name="keyword" placeholder="Buscar por nombre o documento" />
+    <button type="submit">🔍</button>
+</form>
+
+
+
+
+
+
     <table>
         <thead>
             <tr>
@@ -47,5 +59,15 @@
             </tr>
         </tbody>
     </table>
+
+
+    <!-- Botón Exportar a PDF -->
+<div style="margin-top:20px;">
+    <form th:action="@{/usuarios/exportar-pdf}" method="get">
+        <button type="submit">Exportar a PDF</button>
+    </form>
+</div>
+
+
 </body>
 </html>
