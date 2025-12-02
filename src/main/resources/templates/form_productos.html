@@ -38,8 +38,10 @@
 
     <div>
         <label>Caducidad:</label><br>
-        <input type="date" th:field="*{caducidad}" />
-    </div>
+        <input type="date" 
+               th:field="*{caducidad}" 
+               th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
+     </div>
     <br>
 
     <div>

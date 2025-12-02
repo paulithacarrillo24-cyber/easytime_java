@@ -19,14 +19,14 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @Controller
-public class VistaProductoController {
+public class ProductoController {
 
     private final ProductoService service;
     private final InventarioService inventarioService;
     private final ExcelService excelService;
     private final ReportService reportService;
 
-    public VistaProductoController(ProductoService service,
+    public ProductoController(ProductoService service,
                                    InventarioService inventarioService,
                                    ExcelService excelService,
                                    ReportService reportService) {
