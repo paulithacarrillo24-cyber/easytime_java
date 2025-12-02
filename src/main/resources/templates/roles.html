@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestión de Roles</title>
+    <style>
+        table { border-collapse: collapse; width: 50%; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>Gestión de Roles</h1>
+
+    <p>
+        <a th:href="@{/roles/nuevo}">Crear Nuevo Rol</a>
+    </p>
+    
+    <hr/>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="rol : ${roles}">
+                <td th:text="${rol.ID_ROL}">1</td>
+                <td th:text="${rol.NOM_ROL}">Administrador</td>
+                <td>
+                    <a th:href="@{/roles/editar/{id}(id=${rol.ID_ROL})}">Editar</a> 
+                    |
+                    <a th:href="@{/roles/eliminar/{id}(id=${rol.ID_ROL})}" 
+                       onclick="return confirm('¿Está seguro de eliminar este rol?');">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <hr/>
+    <p><a th:href="@{/}">Volver al Inicio</a></p>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventarios</title>
+</head>
+<body>
+
+<h1>Inventarios Registrados</h1>
+
+<!-- <p><a href="/inventarios/crear">Crear nuevo inventario</a></p> -->
+
+<table border="1" cellpadding="6">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre Prod Inve</th>
+        <th>Cantidad</th>
+        <th>Proveedor ID</th>
+        <th>Actualizado</th>
+        <!-- <th>Acciones</th> -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="inv : ${inventarios}">
+        <td th:text="${inv.idInventario}"></td>
+        <td th:text="${inv.nombreProdInve}"></td>
+        <td th:text="${inv.cantidad}"></td>
+        <td th:text="${inv.proveedorId}"></td>
+        <td th:text="${inv.updateAt}"></td>
+
+        <!-- <td>
+            <a th:href="@{'/inventarios/' + ${inv.idInventario} + '/editar'}">Editar</a>
+
+            <form th:action="@{'/inventarios/' + ${inv.idInventario} + '/eliminar'}"
+                  method="post" style="display:inline;">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td> -->
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<a href="/adminproductos">Ver productos</a>
+
+</body>
+</html>

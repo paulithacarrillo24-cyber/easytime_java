@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Servicios</title>
+        <link rel="stylesheet" href="servicios.css">
+    </head>
+
+    <body>
+        <h2>Lista de Servicios</h2>
+        <a th:href="@{/servicios/nuevo}">Nuevo Servicio</a>
+        <br><br>
+
+        <table>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Duración</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+
+            <tr th:each="s : ${servicios}">
+                <td th:text="${s.idServicio}"></td> 
+                
+                <td th:text="${s.nomServ}"></td> 
+                
+                <td th:text="${s.duracionServ}"></td> 
+                
+                <td>
+                    <span th:if="${s.estServ}">Activo</span>
+                    <span th:unless="${s.estServ}">Inactivo</span>
+                </td>
+                
+                <td th:text="${s.descpServ}"></td> 
+                
+                <td th:text="${s.precioServ}"></td> 
+                
+                <td>
+                    <a th:href="@{/servicios/editar/{id}(id=${s.idServicio})}">Editar</a>
+                    <a th:href="@{/servicios/eliminar/{id}(id=${s.idServicio})}" onclick="return confirm('¿Seguro que deseas eliminar este servicio?')">Eliminar</a>
+                </td>
+            </tr>
+
+        </table>
+        <br>
+        </body>
+
+</html>
