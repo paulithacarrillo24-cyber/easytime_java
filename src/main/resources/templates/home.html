@@ -19,6 +19,10 @@
                 <a th:href="@{/servicios}">Ver servicios</a>
             </div>
 
+            <div th:if="${#authorization.expression('hasAnyRole(''Administrador'')')}">
+                <a th:href="@{/vista_servicios}">Reporte servicios</a>
+            </div>
+
             <div th:if="${#authorization.expression('hasRole(''Cliente'')')}">
                 <a th:href="@{/perfil}">Editar mi perfil</a>
             </div>

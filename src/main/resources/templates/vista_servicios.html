@@ -107,7 +107,7 @@
                 <td th:text="${s.ID_SERVICIO}"></td>
                 <td th:text="${s.NOM_SERV}"></td>
                 <td th:text="${s.DURACION_SERV}"></td>
-                <td th:text="${s.EST_SERV}"></td>
+                <td th:text="${s.EST_SERV ? 'Activo' : 'Inactivo'}"></td>
                 <td th:text="${s.DESCP_SERV}"></td>
                 <td th:text="${s.PRECIO_SERV}"></td>
                 <td th:text="${s.CREATED_AT}"></td>
@@ -119,5 +119,10 @@
     <a th:href="@{/reporte_servicios(nombre=${nombre}, desde=${desde}, hasta=${hasta})}" class="btn btn-primary mt-3">
         Descargar PDF
     </a>
+    <div>
+            <form th:action="@{/home}" method="get">
+                <button type="submit">Volver al inicio</button>
+            </form>
+        </div>
 </body>
 </html>

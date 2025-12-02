@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-//import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "servicio")
@@ -26,12 +26,12 @@ import lombok.NoArgsConstructor;
 
 public class Servicio {
     @Id
-    //@NotNull(message = "El código es obligatorio")
+    @NotNull(message = "El código es obligatorio")
     @Column(unique = true, nullable = false)
     private Long ID_SERVICIO;
 
-    //@NotBlank(message = "El nombre es obligatorio")
-    //@Size(max = 100, message = "El nombre no puede superar 100 caracteres")
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 100, message = "El nombre no puede superar 100 caracteres")
     @Column(nullable = false, unique = true, length = 100)
     private String NOM_SERV;
 
@@ -41,15 +41,15 @@ public class Servicio {
     @Column(nullable = false)
     private Boolean EST_SERV;
 
-    //@NotBlank(message = "La descripción es obligatoria")
-    //@Size(max = 500, message = "La descripción no puede superar 500 caracteres")
+    @NotBlank(message = "La descripción es obligatoria")
+    @Size(max = 500, message = "La descripción no puede superar 500 caracteres")
     @Column(nullable = false, length = 500)
     private String DESCP_SERV;
 
-    //@NotNull(message = "El precio es obligatorio")
-    //@DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
-    //@Digits(integer = 8, fraction = 2, message = "Formato de precio inválido") //Integer define el número máximo de digitos enteros, fraction define el número máximo de dígitos decimales.
-    //@Column(nullable = false, precision = 10, scale = 2) //Hasta 10 dígitos, siendo los 2 últimos de estos decimales.
+    @NotNull(message = "El precio es obligatorio")
+    @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
+    @Digits(integer = 8, fraction = 2, message = "Formato de precio inválido") //Integer define el número máximo de digitos enteros, fraction define el número máximo de dígitos decimales.
+    @Column(nullable = false, precision = 10, scale = 2) //Hasta 10 dígitos, siendo los 2 últimos de estos decimales.
     private BigDecimal PRECIO_SERV;
 
     @CreatedDate

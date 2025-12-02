@@ -18,7 +18,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/login/**", "/css/**", "/js/**", "/img/**").permitAll()
-            .requestMatchers("/usuarios/**","/servicios/**").hasRole("Administrador") // solo Administrador
+            .requestMatchers("/usuarios/**","/servicios/**","/vista_servicios/**","//*reporte_servicios*").hasRole("Administrador") // solo Administrador
             .requestMatchers("/perfil/**").hasRole("Cliente")         // solo Cliente
             .requestMatchers("/home/**").hasAnyRole("Administrador", "Cliente") // ambos roles
             .anyRequest().authenticated()

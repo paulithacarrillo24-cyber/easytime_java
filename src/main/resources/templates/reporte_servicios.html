@@ -54,7 +54,7 @@
                         <td>${s.ID_SERVICIO}</td>
                         <td>${s.NOM_SERV}</td>
                         <td>${s.DURACION_SERV}</td>
-                        <td>${s.EST_SERV}</td>
+                        <td><#if s.EST_SERV?? && s.EST_SERV>Activo <#else>Inactivo</#if></td>
                         <td>${s.DESCP_SERV}</td>
                         <td>${s.PRECIO_SERV}</td>
                         <td>${s.CREATED_AT}</td>
