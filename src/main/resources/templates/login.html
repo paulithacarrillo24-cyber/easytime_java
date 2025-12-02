@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Easy Time</title>
+</head>
+
+<body>
+    <h2>Iniciar sesión</h2>
+
+    <div th:if="${param.error}" style="color:red;">
+        Usuario o contraseña incorrectos
+    </div>
+    <div th:if="${param.logout}" style="color:green;">
+        Sesión cerrada correctamente
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Iniciar sesión</button>
+    </form>
+
+    <p>
+        ¿No tienes cuenta?
+        <a th:href="@{/register}">
+            Regístrate aquí
+        </a>
+    </p>
+</body>
+
+</html>

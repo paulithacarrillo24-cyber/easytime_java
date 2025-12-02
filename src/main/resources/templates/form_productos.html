@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
     <title th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}">Producto</title>
+    
+    <link rel="stylesheet" th:href="@{/form_producto.css}"> 
+    
 </head>
 <body>
 
 <h1 th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}">Producto</h1>
+
 
 <!-- Muestra error general -->
 <div th:if="${errorMessage}" style="color:red;">
