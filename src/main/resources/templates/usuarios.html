@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de usuarios</title>
-    <style>
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #333; padding: 6px; text-align: left; }
-        th { background: #eee; }
-    </style>
+    <link rel="stylesheet" th:href="@{/usuarios.css}">
 </head>
 <body>
     <h1>Lista de usuarios</h1>
-    <a href="/usuarios/nuevo">Nuevo usuario</a>
+
+    <a th:href="@{/usuarios/nuevo}">Nuevo usuario</a>
     <br/><br/>
+
     <table>
         <thead>
             <tr>
@@ -21,8 +19,9 @@
                 <th>Apellido</th>
                 <th>Correo</th>
                 <th>Estado</th>
+                <th>Tipo Doc</th>
                 <th>Documento</th>
-                <th>Rol</th> <th>Tipo Doc</th>
+                <th>Rol</th>
                 <th>Tel</th>
                 <th>Acciones</th>
             </tr>
@@ -30,22 +29,29 @@
         <tbody>
             <tr th:each="u : ${usuarios}">
                 <td th:text="${u.idUser}">1</td>
-                <td th:text="${u.nomUser}">Nombre</td> 
-                <td th:text="${u.apeUser}">Apellido</td> 
-                <td th:text="${u.correoUser}">correo</td> 
+                <td th:text="${u.nomUser}">Nombre</td>
+                <td th:text="${u.apeUser}">Apellido</td>
+                <td th:text="${u.correoUser}">correo</td>
+
+                <td th:text="${u.estUser ? 'Activo' : 'Inactivo'}"></td>
                 
-                <td th:text="${u.estUser ? 'Activo' : 'Inactivo'}"></td> 
+                <td th:text="${u.tipoDoc != null ? u.tipoDoc.getDescripcion() : 'N/A'}">Cédula de Ciudadanía</td>
+
+                <td th:text="${u.numeroDoc}">123</td>
                 
-                <td th:text="${u.numeroDoc}">123</td> <td th:text="${u.rol.nomRol}">Cliente</td> 
-                
-                <td th:text="${u.tipoDoc}">Cedula Ciudadania</td> 
-                <td th:text="${u.telUser}">3001234567</td> <td>
+                <td th:text="${u.rol != null ? u.rol.nomRol : 'Sin Asignar'}">Cliente</td>
+
+                <td th:text="${u.telUser}">3001234567</td>
+
+                <td>
                     <a th:href="@{'/usuarios/editar/' + ${u.idUser}}">Editar</a> |
+                    
                     <a th:href="@{'/usuarios/eliminar/' + ${u.idUser}}"
-                       onclick="return confirm('¿Eliminar usuario?');">Eliminar</a>
+                       onclick="return confirm('¿Estás seguro de que quieres eliminar a este usuario?')">Eliminar</a>
                 </td>
             </tr>
         </tbody>
     </table>
+
 </body>
 </html>

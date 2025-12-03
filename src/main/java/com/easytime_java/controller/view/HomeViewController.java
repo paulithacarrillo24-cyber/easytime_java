@@ -10,22 +10,18 @@ import org.springframework.security.core.Authentication;
 public class HomeViewController {
 
     /**
-     * Mapea todas las URLs de la página principal:
-     * 1. / (Ruta raíz)
-     * 2. /home (Ruta de acceso directo)
-     * 3. /dashboard (Ruta de redirección post-login de SecurityConfig)
-     * La ruta "/" ahora es única en la aplicación y apunta al menú principal.
+     * Mapea las URLs de la página principal privada (Dashboard) para usuarios autenticados.
+     * Solo mapea /home y /dashboard. La ruta "/" ahora es gestionada por PublicController.
      */
-    @GetMapping({"/", "/home", "/dashboard"})
+    @GetMapping({"/home", "/dashboard"}) // ⭐ IMPORTANTE: Se ha eliminado la ruta "/" de aquí
     public String showDashboard(Model model) {
         
-        // --- Opcional: Mostrar el nombre de usuario (Descomentado y corregido) ---
         // Obtener el usuario autenticado para fines informativos en el dashboard
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         model.addAttribute("nombreUsuario", username);
         
-        // Retorna el nombre del archivo de la plantilla
+        // Retorna el nombre del archivo de la plantilla (el menú de módulos)
         return "home"; // Esto cargará src/main/resources/templates/home.html
     }
 }

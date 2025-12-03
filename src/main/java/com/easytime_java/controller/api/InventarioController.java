@@ -1,62 +1,90 @@
 package com.easytime_java.controller.api;
 
 import com.easytime_java.model.Inventario;
+// ⭐ Importar el modelo Proveedor (Asegúrate que esta ruta sea correcta)
+import com.easytime_java.model.Proveedor;
 import com.easytime_java.Service.InventarioService;
+// ⭐ Importar el servicio ProveedorService (Asegúrate que esta ruta sea correcta)
+import com.easytime_java.Service.ProveedorService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
+import java.util.List; // ⭐ Importar List
 
 @Controller
-@RequestMapping("/inventario") // Mapeado a singular para coincidir con el enlace del Dashboard (/inventario)
+@RequestMapping("/inventarios")
 public class InventarioController {
 
-    private final InventarioService service;
+    private final InventarioService inventarioService; // Renombrado a inventarioService
+    // ⭐ NUEVO: Servicio para Proveedores
+    private final ProveedorService proveedorService;
 
-    public InventarioController(InventarioService service) {
-        this.service = service;
+    // ⭐ MODIFICACIÓN en el constructor para inyectar ambos servicios
+    public InventarioController(InventarioService inventarioService, ProveedorService proveedorService) {
+        this.inventarioService = inventarioService;
+        this.proveedorService = proveedorService;
     }
 
-    // Mapea /inventario. Muestra la lista de ítems del inventario.
+    // Mapea /inventarios. Muestra la lista de ítems del inventario.
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("inventarios", service.listar());
-        return "inventarios"; // Asume la plantilla 'inventarios.html'
+        model.addAttribute("inventarios", inventarioService.listar());
+        return "inventarios";
     }
 
-    // Mapea /inventario/crear. Muestra el formulario para crear un nuevo ítem.
+    // ⭐ MODIFICACIÓN CLAVE: Cargar la lista de proveedores al modelo
     @GetMapping("/crear")
     public String mostrarCrear(Model model) {
         model.addAttribute("inventario", new Inventario());
-        return "inventario-form"; // Asume la plantilla 'inventario-form.html'
+
+        // 🌟 OBTENER PROVEEDORES: Asume que proveedorService tiene un método 'listar' o
+        // 'findAll'
+        List<Proveedor> proveedores = proveedorService.listar();
+        model.addAttribute("listaProveedores", proveedores);
+
+        return "form_inventario";
     }
 
-    // Mapea POST /inventario/crear. Guarda el nuevo ítem.
+    // Mapea POST /inventarios/crear. Guarda el nuevo ítem.
     @PostMapping("/crear")
-    public String crear(@ModelAttribute Inventario inv) {
-        service.guardar(inv);
-        return "redirect:/inventario"; // Redirige a la lista
+    public String crear(@ModelAttribute("inventario") Inventario inv) {
+
+        inv.setUpdateAt(LocalDateTime.now());
+
+        inventarioService.guardar(inv);
+        return "redirect:/inventarios";
     }
 
-    // Mapea /inventario/{id}/editar. Muestra el formulario de edición.
+    // ⭐ MODIFICACIÓN CLAVE: También cargar la lista de proveedores para la edición
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Integer id, Model model) {
-        model.addAttribute("inventario", service.obtenerPorId(id));
-        return "inventario-form";
+        model.addAttribute("inventario", inventarioService.obtenerPorId(id));
+
+        // 🌟 OBTENER PROVEEDORES: Necesario para que el desplegable se llene en el
+        // formulario de edición
+        List<Proveedor> proveedores = proveedorService.listar();
+        model.addAttribute("listaProveedores", proveedores);
+
+        return "form_inventario";
     }
 
-    // Mapea POST /inventario/{id}/editar. Guarda los cambios.
+    // Mapea POST /inventarios/{id}/editar. Guarda los cambios.
     @PostMapping("/{id}/editar")
     public String guardarEditar(@PathVariable Integer id, @ModelAttribute Inventario inv) {
         inv.setIdInventario(id);
-        service.guardar(inv);
-        return "redirect:/inventario";
+
+        inv.setUpdateAt(LocalDateTime.now());
+
+        inventarioService.guardar(inv);
+        return "redirect:/inventarios";
     }
 
-    // Mapea POST /inventario/{id}/eliminar. Elimina el ítem.
-    // Usamos POST aquí, ya que la eliminación (cambio de estado) es una acción no idempotente.
+    // Mapea POST /inventarios/{id}/eliminar. Elimina el ítem.
     @PostMapping("/{id}/eliminar")
     public String eliminar(@PathVariable Integer id) {
-        service.eliminar(id);
-        return "redirect:/inventario";
+        inventarioService.eliminar(id);
+        return "redirect:/inventarios";
     }
 }

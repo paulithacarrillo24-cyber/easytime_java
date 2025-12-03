@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${servicio.idServicio == null ? 'Crear Nuevo Servicio' : 'Editar Servicio'}">Formulario de Servicio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 th:text="${servicio.idServicio == null ? 'Registro de Nuevo Servicio' : 'Editar Servicio: ' + servicio.nomServ}">Formulario de Servicio</h3>
+        </div>
+        
+        <div class="card-body">
+            
+            <form th:action="@{/servicios/guardar}" th:object="${servicio}" method="post">
+                
+                <input type="hidden" th:field="*{idServicio}" /> 
+                
+                <input type="hidden" th:field="*{createdAt}" />
+                <input type="hidden" th:field="*{updateAt}" />
+                
+                
+                <div class="mb-3">
+                    <label for="nomServ" class="form-label fw-bold">Nombre del Servicio</label>
+                    <input type="text" th:field="*{nomServ}" id="nomServ" class="form-control" required placeholder="Ej: Lavado Básico, Lavado Premium">
+                </div>
+
+                <div class="mb-3">
+                    <label for="duracionServ" class="form-label fw-bold">Duración del Servicio</label>
+                    <input type="text" th:field="*{duracionServ}" id="duracionServ" class="form-control" required placeholder="Ej: 30 minutos, 1.5 horas">
+                </div>
+
+                <div class="mb-3">
+                    <label for="precioServ" class="form-label fw-bold">Precio</label>
+                    <input type="number" th:field="*{precioServ}" id="precioServ" class="form-control" required placeholder="Ej: 20000" min="0">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="descpServ" class="form-label fw-bold">Descripción</label>
+                    <textarea th:field="*{descpServ}" id="descpServ" class="form-control" rows="3" required placeholder="Detalle las tareas incluidas en el servicio."></textarea>
+                </div>
+                
+                <hr class="my-4"/>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" th:field="*{estServ}" id="estServ" class="form-check-input">
+                    <label class="form-check-label fw-bold" for="estServ">Servicio Activo / Disponible</label>
+                    <div class="form-text">Marque para permitir la programación de este servicio.</div>
+                </div>
+
+                <hr/>
+                
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/servicios}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancelar y Volver
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> 
+                        <span th:text="${servicio.idServicio == null ? 'Crear Servicio' : 'Guardar Cambios'}">Guardar</span>
+                    </button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

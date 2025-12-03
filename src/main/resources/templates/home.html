@@ -1,76 +1,52 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> 
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - EASYTIME</title>
-    <!-- 
-        USAMOS SOLO UN ARCHIVO CSS. 
-        Asegúrate de que este archivo exista en: src/main/resources/static/css/dashboard.css
-    -->
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}"> 
-    
-    <!-- Opcional: Si quieres usar un framework como Bootstrap para mejorar la apariencia -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"> -->
-    
-    <!-- El CSS de las tarjetas DEBE estar aquí si no usas el archivo externo: -->
-    <!-- Puedes copiar el CSS que te di en el paso anterior y pegarlo dentro de la etiqueta <style> si el archivo externo falla. -->
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
+
 <body>
 
     <header>
         <h2>EASYTIME - Menú Principal</h2>
-        <p>Bienvenido, 
-            <span sec:authentication="name">Usuario</span>. 
+        <p>Bienvenido,
+            <span sec:authentication="name">Usuario</span>.
             <a th:href="@{/logout}">Cerrar Sesión</a>
         </p>
     </header>
 
     <div class="dashboard-grid">
-        
-        <!-- MÓDULO: Citas -->
+
         <a th:href="@{/citas/lista}" class="module-card">
             <div class="icon">📅</div>
             <h3>Gestión de Citas</h3>
-            <!-- Descripción eliminada para un diseño más limpio -->
         </a>
-        
-        <!-- MÓDULO: Servicios -->
+
         <a th:href="@{/servicios}" class="module-card">
             <div class="icon">🛠️</div>
             <h3>Catálogo de Servicios</h3>
-            <!-- Descripción eliminada para un diseño más limpio -->
         </a>
 
-        <!-- MÓDULO: Inventario -->
-        <a th:href="@{/inventario}" class="module-card">
+        <a th:href="@{/inventarios}" class="module-card">
             <div class="icon">📦</div>
             <h3>Inventario</h3>
-            <!-- Descripción eliminada para un diseño más limpio -->
         </a>
 
-        <!-- MÓDULO: Productos -->
         <a th:href="@{/productos}" class="module-card">
             <div class="icon">🏷️</div>
-            <h3>Gestión de Productos</h3>
-            <!-- Descripción eliminada para un diseño más limpio -->
+            <h3>Productos</h3>
         </a>
-        
-        <!-- MÓDULO: Usuarios (Solo para ADMIN) -->
-        <a th:href="@{/usuarios}" class="module-card" sec:authorize="hasAuthority('ADMINISTRADOR')">
+
+        <a th:href="@{/usuarios}" class="module-card" sec:authorize="hasAnyRole('ADMINISTRADOR', 'JEFE_DE_GESTION')">
             <div class="icon">👥</div>
-            <h3>Gestión de Usuarios</h3>
-            <!-- Descripción eliminada para un diseño más limpio -->
+            <h3>Lista de Usuarios</h3>
         </a>
-        
-        <!-- MÓDULO: Roles (Solo para ADMIN) -->
-        <a th:href="@{/roles}" class="module-card" sec:authorize="hasAuthority('ADMINISTRADOR')">
-            <div class="icon">🛡️</div>
-            <h3>Configuración de Roles</h3>
-            <!-- Descripción eliminada para un diseño más limpio -->
-        </a>
-        
-    </div>
-    
+
+        </div>
+
 </body>
+
 </html>

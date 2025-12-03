@@ -1,0 +1,192 @@
+/* ------------------------------------------- */
+/* --- ESTILOS GENERALES Y LAYOUT --- */
+/* ------------------------------------------- */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #f0f2f5; /* Fondo gris muy claro */
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Contenedor principal para centrar el contenido y limitar el ancho */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #333;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* ------------------------------------------- */
+/* --- BOTÓN 'NUEVO USUARIO' --- */
+/* ------------------------------------------- */
+.btn-new {
+    display: inline-block;
+    background-color: #007bff; /* Azul primario */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease, transform 0.1s;
+}
+
+.btn-new:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* ------------------------------------------- */
+/* --- ESTILOS DE LA TABLA --- */
+/* ------------------------------------------- */
+table {
+    width: 100%;
+    border-collapse: separate; /* Permite bordes redondeados en la tabla */
+    border-spacing: 0;
+    margin-top: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo del encabezado de la tabla (THEAD) */
+thead {
+    background-color: #007bff; /* Azul primario para el encabezado */
+    color: white;
+}
+
+th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #0056b3; /* Borde más oscuro entre thead y tbody */
+}
+
+/* Bordes redondeados en las esquinas del encabezado */
+thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Estilo de las filas del cuerpo (TBODY) */
+tbody tr {
+    background-color: #ffffff;
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f7f7f7; /* Ligero sombreado en filas pares */
+}
+
+tbody tr:hover {
+    background-color: #e9f0ff; /* Azul muy claro al pasar el ratón */
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+    font-size: 14px;
+}
+
+/* ------------------------------------------- */
+/* --- ESTILOS DE ESTADO (Activo/Inactivo) --- */
+/* ------------------------------------------- */
+.status-active {
+    background-color: #d4edda; /* Verde claro */
+    color: #155724; /* Verde oscuro */
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-inactive {
+    background-color: #f8d7da; /* Rojo claro */
+    color: #721c24; /* Rojo oscuro */
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* ------------------------------------------- */
+/* --- ESTILOS DE ACCIONES (Editar/Eliminar) --- */
+/* ------------------------------------------- */
+.action-link {
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 5px;
+    transition: color 0.2s ease;
+}
+
+.action-link:first-child {
+    color: #007bff; /* Azul para Editar */
+}
+
+.action-link:last-child {
+    color: #dc3545; /* Rojo para Eliminar */
+}
+
+.action-link:hover {
+    text-decoration: underline;
+}
+
+/* ------------------------------------------- */
+/* --- RESPONSIVE DESIGN (para dispositivos pequeños) --- */
+/* ------------------------------------------- */
+@media screen and (max-width: 900px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    tr {
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%; /* Espacio para la etiqueta */
+        text-align: right;
+    }
+    
+    td:before {
+        /* Usamos el atributo data-label en el HTML para mostrar las etiquetas */
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 600;
+        color: #007bff;
+    }
+
+    /* Ocultar el texto de Rol en la versión móvil si es "Sin Asignar" */
+    td:nth-child(7) span {
+        display: block; /* Asegura que el contenido del rol se muestre */
+    }
+}

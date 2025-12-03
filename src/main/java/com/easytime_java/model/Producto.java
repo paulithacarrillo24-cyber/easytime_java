@@ -30,6 +30,11 @@ public class Producto {
 
     @Column(name = "CANTIDAD_PROD", length = 45, nullable = false)
     private String cantidad;
+    
+    // ⭐ CAMBIO AÑADIDO
+    @Column(name = "url_imagen", length = 255) // Debe coincidir con la columna SQL
+    private String urlImagen; 
+    // ⭐ FIN CAMBIO AÑADIDO
 
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -75,6 +80,11 @@ public class Producto {
 
     public String getCantidad() { return cantidad; }
     public void setCantidad(String cantidad) { this.cantidad = cantidad; }
+    
+    // ⭐ GETTER y SETTER AÑADIDOS
+    public String getUrlImagen() { return urlImagen; }
+    public void setUrlImagen(String urlImagen) { this.urlImagen = urlImagen; }
+    // ⭐ FIN GETTER y SETTER AÑADIDOS
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
@@ -84,5 +94,4 @@ public class Producto {
 
     public Inventario getInventario() { return inventario; }
     public void setInventario(Inventario inventario) { this.inventario = inventario; }
-
 }

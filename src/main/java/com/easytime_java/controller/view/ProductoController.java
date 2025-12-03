@@ -9,12 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping; // Importación necesaria
+import org.springframework.web.bind.annotation.PostMapping; // Importación necesaria para POST
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/productos") // <--- ESTO ARREGLA EL 404 DEL DASHBOARD
-public class ProductoController { // Renombrado a ProductoController por convención
+@RequestMapping("/productos")
+public class ProductoController {
 
     private final ProductoService service;
     private final InventarioService inventarioService;
@@ -25,32 +25,28 @@ public class ProductoController { // Renombrado a ProductoController por convenc
     }
       
     // LISTAR
-    // Mapea a /productos (resuelve el error 404 del Dashboard)
     @GetMapping 
     public String listarProductos(Model model) {
         model.addAttribute("productos", service.listar());
-        return "productos"; // Asume la plantilla 'productos.html'
+        return "productos";
     }
 
     // CREAR - Mostrar Formulario
-    // Mapea a /productos/nuevo
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("producto", new Producto());
         model.addAttribute("inventarios", inventarioService.listar());
-        return "form_productos"; // Asume la plantilla 'form_productos.html'
+        return "form_productos";
     }
 
-    // CREAR - Guardar
-    // Mapea a POST /productos/guardar
+    // CREAR/EDITAR - Guardar
     @PostMapping("/guardar")
     public String guardarProducto(@ModelAttribute Producto producto) {
         service.guardar(producto);
-        return "redirect:/productos"; // Redirige a la ruta base /productos
+        return "redirect:/productos";
     }
 
     // EDITAR - Mostrar Formulario
-    // Mapea a /productos/editar/{id}
     @GetMapping("/editar/{id}")
     public String editarProducto(@PathVariable Integer id, Model model) {
         Producto producto = service.obtenerPorId(id);
@@ -60,11 +56,10 @@ public class ProductoController { // Renombrado a ProductoController por convenc
     }
 
     // ELIMINAR
-    // Mapea a /productos/eliminar/{id}
-    // Se recomienda cambiar a un PostMapping para eliminación real.
-    @GetMapping("/eliminar/{id}")
+    // ⭐ CAMBIADO: Ahora usa @PostMapping para mayor seguridad.
+    @PostMapping("/eliminar/{id}") 
     public String eliminarProducto(@PathVariable Integer id) {
         service.eliminar(id);
-        return "redirect:/productos"; // Redirige a la ruta base /productos
-    }      
+        return "redirect:/productos";
+    } 
 }

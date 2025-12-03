@@ -18,7 +18,8 @@ public class Inventario {
     @Column(name = "CANTIDAD", length = 45, nullable = false)
     private String cantidad;
 
-    @Column(name = "UPDATE_AT")
+    // ⭐ CORRECCIÓN: Agregar nullable = false para coincidir con la restricción SQL ⭐
+    @Column(name = "UPDATE_AT", nullable = false) 
     private LocalDateTime updateAt;
 
     @Column(name = "PROVEEDOR_ID_PROVEDOR", nullable = false)

@@ -20,8 +20,12 @@ public class Usuario {
     @Column(name = "NUMERO_DOC", length = 12)
     private String numeroDoc; 
 
+    // ⭐ CORRECCIÓN CLAVE AQUÍ:
+    // 1. Cambiamos el tipo de dato de String a TipoDocumento.
+    // 2. Quitamos la anotación @Convert si el TipoDocumentoConverter tiene @Converter(autoApply = true).
+    // Si no tiene autoApply, debes agregar: @Convert(converter = TipoDocumentoConverter.class)
     @Column(name = "TIPO_DOC") 
-    private String tipoDoc; 
+    private TipoDocumento tipoDoc; // <--- ¡CORREGIDO!
 
     @Column(name = "NOM_USER", length = 40)
     private String nomUser; 
@@ -41,10 +45,8 @@ public class Usuario {
     @Column(name = "PASSWORD", nullable = false, length = 255)
     private String password;
 
-    // ⭐ CORRECCIÓN CRÍTICA: Cambiamos FetchType.LAZY a FetchType.EAGER
-    // Esto resuelve el LazyInitializationException, asegurando que el objeto Rol
-    // se cargue inmediatamente junto con el Usuario en la sesión.
-    @ManyToOne(fetch = FetchType.EAGER) // <--- ¡CORREGIDO!
+    // Relación Rol (FetchType.EAGER corregido)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ROL_USER")
     private Rol rol; 
 
@@ -81,8 +83,9 @@ public class Usuario {
     public String getNumeroDoc() { return numeroDoc; }
     public void setNumeroDoc(String numeroDoc) { this.numeroDoc = numeroDoc; }
 
-    public String getTipoDoc() { return tipoDoc; }
-    public void setTipoDoc(String tipoDoc) { this.tipoDoc = tipoDoc; }
+    // ⭐ GETTER Y SETTER CORREGIDOS para TipoDocumento
+    public TipoDocumento getTipoDoc() { return tipoDoc; }
+    public void setTipoDoc(TipoDocumento tipoDoc) { this.tipoDoc = tipoDoc; }
 
     public String getTelUser() { return telUser; }
     public void setTelUser(String telUser) { this.telUser = telUser; }
@@ -99,18 +102,18 @@ public class Usuario {
 
     public LocalDateTime getUpdateAt() { return updateAt; }
     public void setUpdateAt(LocalDateTime updateAt) { this.updateAt = updateAt; }
-    
-    
+
+
     // --- MÉTODOS AUXILIARES PARA FORMULARIOS ---
     public Integer getIdRolUser() {
         return (rol != null) ? rol.getIdRol() : null;
     }
-    
+
     public void setIdRolUser(Integer idRol) {
         if (this.rol == null) {
             this.rol = new Rol();
         }
-        
+
         this.rol.setIdRol(idRol);
     }
 }

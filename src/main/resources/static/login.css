@@ -9,10 +9,11 @@ body {
 }
 
 /* --- Estilos del Encabezado (header) --- */
+/* Nota: Esta sección no es relevante para login.html pero la mantengo si la usas en index.html */
 .header {
     background-color: #ffffff; /* Fondo blanco para el encabezado */
     padding: 15px 40px; /* Relleno superior/inferior y lateral */
-    display: flex; /* Habilita Flexbox (paarq eu el css sea felixible para alinear facilmente) */
+    display: flex; /* Habilita Flexbox */
     justify-content: space-between; /* Distribuye el espacio entre logo y enlaces */
     align-items: center; /* Centra verticalmente los elementos */
     box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra sutil inferior */
@@ -89,7 +90,7 @@ body {
 /* Estilos para campos de texto y contraseña */
 .login-box input[type="text"],
 .login-box input[type="password"] {
-    width: calc(100% - 20px); /* Ancho 100% menos el relleno lateral */
+    width: 100%; /* Ahora sí ocupa el 100% gracias a la envoltura */
     padding: 12px 10px;
     margin-bottom: 20px; /* Espacio debajo del campo */
     border: 1px solid #ddd;
@@ -127,10 +128,11 @@ body {
 
 /* --- Estilos para Mensajes (Error/Éxito) --- */
 .message {
-    margin-top: 20px;
+    margin-bottom: 15px; /* Ajuste para el espaciado entre el contenido anterior y el mensaje */
     padding: 10px 15px;
     border-radius: 5px;
     font-size: 14px;
+    text-align: center; /* Centrar texto del mensaje */
 }
 
 /* Estilos específicos para mensajes de ERROR */
