@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Reporte de Inventarios</title>
+    <style type="text/css">
+        body { font-family: DejaVu Sans, Arial, sans-serif; font-size: 12px; margin: 20px; }
+        h2 { text-align: center; margin-bottom: 6px; }
+        .meta { text-align: center; font-size: 11px; color: #333; margin-bottom: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #444; padding: 6px; font-size: 11px; text-align: center; }
+        th { background: #eee; }
+    </style>
+</head>
+<body>
+    <h2>Reporte de Inventarios</h2>
+
+    <div class="meta">
+        <div th:if="${q != null and q != ''}">Filtro: <span th:text="${q}"></span></div>
+        <div>Generado: <span th:text="${#temporals.format(fechaActual, 'yyyy-MM-dd HH:mm')}"></span></div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre Prod Inve</th>
+                <th>Cantidad</th>
+                <th>Proveedor ID</th>
+                <th>Actualizado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="inv : ${inventarios}">
+                <td th:text="${inv.idInventario}">1</td>
+                <td th:text="${inv.nombreProdInve}">Nombre</td>
+                <td th:text="${inv.cantidad}">0</td>
+                <td th:text="${inv.proveedorId}">0</td>
+                <td th:text="${#temporals.format(inv.updateAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 12:00</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

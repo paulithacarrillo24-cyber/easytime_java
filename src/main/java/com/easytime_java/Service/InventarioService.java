@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class InventarioService {
 
@@ -29,5 +30,9 @@ public class InventarioService {
 
     public void eliminar(Integer id) {
         repo.deleteById(id);
+    }
+
+    public List<Inventario> buscar(String q) {
+        return repo.buscar(q.toLowerCase());
     }
 }

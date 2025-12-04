@@ -19,7 +19,6 @@ import org.thymeleaf.spring6.ISpringTemplateEngine;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.servlet.ServletContext;
