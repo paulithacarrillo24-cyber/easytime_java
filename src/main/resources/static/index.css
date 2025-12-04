@@ -1,0 +1,124 @@
+/* ================================== */
+/* CORRECCIÓN: Evitar que la página salte */
+/* ================================== */
+html {
+    overflow-y: scroll;
+}
+
+/* ================================== */
+/* VARIABLES DE COLOR EASYTIME */
+/* ================================== */
+:root {
+    --easytime-blue: #4195d8;
+    --easytime-dark-blue: #2c6e91;
+    --easytime-white: #ffffff;
+    --easytime-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* ================================== */
+/* ENCABEZADO SUPERIOR (LOGO, ACCESO) */
+/* ================================== */
+.header-top {
+    background-color: var(--easytime-white);
+    border-bottom: 2px solid var(--easytime-blue);
+}
+
+/* Estilo para el botón de acceso (contorno) */
+.access-btn {
+    --bs-btn-border-color: var(--easytime-blue);
+    --bs-btn-color: var(--easytime-blue);
+    font-weight: 500;
+}
+
+/* Estilo para el botón primario (registrar) */
+.primary-btn {
+    background-color: var(--easytime-blue);
+    border-color: var(--easytime-blue);
+    font-weight: 500;
+}
+.primary-btn:hover {
+    background-color: var(--easytime-dark-blue);
+    border-color: var(--easytime-dark-blue);
+}
+
+/* ================================== */
+/* MENÚ DE NAVEGACIÓN (PRODUCTOS/SERVICIOS) */
+/* ================================== */
+.header-menu {
+    background-color: var(--easytime-blue);
+    padding: 1rem 0;
+    box-shadow: 0 4px 6px var(--easytime-shadow);
+}
+.menu-link {
+    color: var(--easytime-white);
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+    display: block;
+    padding: 0.5rem 0;
+    transition: background-color 0.2s;
+}
+.menu-link:hover {
+    background-color: var(--easytime-dark-blue);
+    color: var(--easytime-white);
+}
+/* Indicador de pestaña activa */
+.active-link {
+    border-bottom: 3px solid var(--easytime-white);
+}
+
+/* ================================== */
+/* CONTENIDO PRINCIPAL */
+/* ================================== */
+.content-section {
+    padding: 3rem 0;
+
+    /* Mantener altura mínima para evitar saltos adicionales */
+    min-height: 70vh;
+
+    background-color: #f8f9fa;
+}
+
+.content-title {
+    color: var(--easytime-dark-blue);
+    border-bottom: 3px solid var(--easytime-blue);
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+/* ================================== */
+/* TARJETAS (PRODUCTOS / SERVICIOS) */
+/* ================================== */
+/* ⭐ CORRECCIÓN 1: Asegura que todas las tarjetas tengan la misma estructura Flexbox 
+      y una altura mínima para la uniformidad */
+.card {
+    display: flex;
+    flex-direction: column;
+    min-height: 480px; /* Ajusta este valor si necesitas más o menos espacio */
+}
+
+.card-product {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px var(--easytime-shadow);
+    transition: box-shadow 0.3s;
+}
+
+.card-product:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* ⭐ CORRECCIÓN 2: Limita la altura de la imagen para la uniformidad visual */
+.card-img-top {
+    max-height: 250px; 
+    object-fit: cover;
+    object-position: center;
+    padding: 10px; /* Opcional: un poco de relleno para estética */
+}
+
+/* ⭐ CORRECCIÓN 3: Fuerza al cuerpo de la tarjeta a ocupar el espacio restante, 
+      empujando el footer hacia abajo (alineando los botones) */
+.card-body {
+    flex-grow: 1; 
+}

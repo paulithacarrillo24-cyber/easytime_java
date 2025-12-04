@@ -1,0 +1,88 @@
+/* ====== CARD GENERAL ====== */
+.container {
+    max-width: 1100px;
+}
+
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* ====== TABLA ====== */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+}
+
+.table thead {
+    font-size: 15px;
+    letter-spacing: .5px;
+}
+
+.table thead th {
+    background: #007bff !important;   /* el azul del módulo servicios */
+    color: white !important;
+    text-transform: uppercase;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f7ff !important;
+}
+
+/* ====== CELDAS ====== */
+.table td, 
+.table th {
+    padding: 14px;
+}
+
+/* ====== BOTÓN NUEVO ====== */
+.btn-secondary {
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+}
+
+.btn-secondary:hover {
+    background-color: #0056b3 !important;
+}
+
+/* ====== BOTONES DE ACCIÓN ====== */
+.btn-outline-primary {
+    border-color: #007bff !important;
+    color: #007bff !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+/* ====== ÍCONOS ====== */
+.bi {
+    font-size: 1rem;
+}
+
+/* ====== BOTÓN HOME ====== */
+.btn-secondary.mt-3 {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+}
+
+.btn-secondary.mt-3:hover {
+    background-color: #5a6268 !important;
+}
+
+/* ====== TITULO ====== */
+h2 {
+    font-weight: 600;
+}

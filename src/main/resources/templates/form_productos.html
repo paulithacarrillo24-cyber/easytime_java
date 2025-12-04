@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}">Producto</title>
+
+    <link rel="stylesheet" th:href="@{/form_producto.css}">
+
+</head>
+
+<body>
+
+    <h1 th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}">Producto</h1>
+
+    <div class="card" style="padding: 20px; max-width: 600px; margin: 30px auto; background-color: white;">
+
+        <form th:action="@{/productos/guardar}" th:object="${producto}" method="post">
+
+            <input type="hidden" th:field="*{idProducto}" />
+            <input type="hidden" th:field="*{createdAt}" />
+            <input type="hidden" th:field="*{updatedAt}" />
+
+            <div>
+                <label>Código:</label><br>
+                <input type="text" th:field="*{codigo}" class="input-style" required />
+            </div>
+            <br>
+
+            <div>
+                <label>Nombre:</label><br>
+                <input type="text" th:field="*{nombre}" class="input-style" required />
+            </div>
+            <br>
+
+            <div>
+                <label>Descripción:</label><br>
+                <textarea th:field="*{descripcion}" class="input-style" required></textarea>
+            </div>
+            <br>
+
+            <div>
+                <label>Caducidad:</label><br>
+                <input type="date" th:field="*{caducidad}" class="input-style" required />
+            </div>
+            <br>
+
+            <div>
+                <label>Precio:</label><br>
+                <input type="number" th:field="*{precio}" class="input-style" step="0.01" required />
+            </div>
+            <br>
+
+            <div>
+                <label>Cantidad:</label><br>
+                <input type="number" th:field="*{cantidad}" class="input-style" required />
+            </div>
+            <br>
+
+            <div>
+                <label>Inventario asignado:</label><br>
+
+                <select th:field="*{inventario}" class="input-style" required>
+                    <option th:value="null" disabled selected>-- Seleccione inventario --</option>
+                    <option th:each="inv : ${inventarios}" th:value="${inv.idInventario}"
+                        th:text="${'ID: ' + inv.idInventario + ' - ' + inv.nombreProdInve}"
+                        th:selected="${producto.inventario != null and producto.inventario.idInventario == inv.idInventario}">
+                    </option>
+                </select>
+            </div>
+            <br>
+
+            <div>
+                <button type="submit"
+                    th:text="${producto.idProducto == null ? 'Crear' : 'Guardar Cambios'}">Guardar</button>
+                <a th:href="@{/productos}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

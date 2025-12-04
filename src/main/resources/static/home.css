@@ -1,0 +1,31 @@
+/* src/main/resources/static/css/styles.css */
+
+/* ================================== */
+/* ESTILOS GLOBALES Y DE LAYOUT */
+/* ================================== */
+
+body {
+    font-family: Arial, sans-serif; /* Fuente básica */
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Fondo suave para la aplicación */
+}
+
+/* Estilos de Header/Menú General */
+header {
+    background-color: #f8f9fa;
+    padding: 20px 40px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h2 {
+    margin: 0;
+    color: #333;
+}
+
+header p {
+    margin: 0;
+}

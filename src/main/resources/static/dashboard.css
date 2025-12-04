@@ -1,0 +1,134 @@
+/* ================================== */
+/* ESTILOS DE VARIABLES DE COLOR */
+/* ================================== */
+:root {
+    --easytime-blue: #4195d8; /* Azul del Logo */
+    --easytime-dark-blue: #2c6e91; /* Un azul más oscuro para texto */
+    --easytime-white: #ffffff;
+    --easytime-shadow: rgba(0,0,0,0.1);
+    --easytime-hover-shadow: rgba(0,0,0,0.2);
+}
+
+/* ================================== */
+/* ESTILOS GENERALES DEL DASHBOARD */
+/* ================================== */
+
+body {
+    background-color: #f4f6f9; /* Fondo muy claro para contraste */
+}
+
+/* Contenedor principal para la cuadrícula */
+.dashboard-grid {
+    display: grid;
+    /* Crea columnas que se ajustan automáticamente, mínimo 280px */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 30px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ================================== */
+/* ESTILOS DE TARJETAS (MÓDULOS) */
+/* ================================== */
+
+/* Estilo para cada tarjeta de módulo */
+.module-card {
+    background-color: var(--easytime-white);
+    /* Barra de color azul del logo a la izquierda para acento */
+    border-left: 5px solid var(--easytime-blue); 
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px var(--easytime-shadow);
+    text-decoration: none;
+    color: #333;
+    display: flex; /* Usar flex para alinear ícono y texto */
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Efecto al pasar el ratón (Hover) */
+.module-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px var(--easytime-hover-shadow);
+}
+
+/* Estilo para el título de la tarjeta */
+.module-card h3 {
+    margin-top: 10px;
+    color: var(--easytime-dark-blue); /* Color más oscuro para el texto del título */
+    font-size: 1.25rem;
+}
+
+/* Estilo para el ícono */
+.module-card .icon {
+    font-size: 36px;
+    color: var(--easytime-blue); /* Color del logo para los íconos */
+    margin-bottom: 5px;
+}
+
+/* ================================== */
+/* ESTILOS DEL ENCABEZADO (HEADER) */
+/* ================================== */
+
+header {
+    background-color: var(--easytime-white);
+    padding: 20px 40px;
+    border-bottom: 2px solid var(--easytime-blue); /* Borde azul de la marca */
+    
+    /* Adaptación a la estructura del fragmento HTML */
+    display: block; 
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto; /* Centrar el contenido del header */
+}
+
+header .title {
+    margin: 0;
+    color: var(--easytime-dark-blue);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Estilos de la información del usuario */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-info p {
+    margin: 0;
+    color: #555;
+    font-size: 1rem;
+}
+
+.user-info strong {
+    color: var(--easytime-blue);
+    font-weight: bold;
+}
+
+/* Estilo del botón de Cerrar Sesión */
+.btn-logout {
+    text-decoration: none;
+    color: var(--easytime-blue); 
+    padding: 8px 15px;
+    border: 1px solid var(--easytime-blue);
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: var(--easytime-blue);
+    color: var(--easytime-white);
+}
+
+.btn-logout i {
+    margin-right: 5px;
+}
