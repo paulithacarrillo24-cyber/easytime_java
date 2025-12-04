@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Lista de Productos</title>
@@ -14,7 +14,8 @@
 
     <h2 class="mb-4 text-secondary">Gestión de Productos</h2>
 
-    <a th:href="@{/productos/nuevo}" class="btn btn-secondary mb-3">
+    <!-- Botón de nuevo producto solo para ADMINISTRADOR -->
+    <a th:href="@{/productos/nuevo}" class="btn btn-secondary mb-3" sec:authorize="hasRole('ADMINISTRADOR')">
         <i class="bi bi-plus-circle-fill"></i> Nuevo Producto
     </a>
 
@@ -39,11 +40,12 @@
                 </a>
             </div>
 
-        <div class="col-auto ms-auto">
-            <a th:href="@{/productos/pdf(q=${q})}" class="btn btn-success">
-            <i class="bi bi-filetype-pdf"></i> Descargar PDF
-            </a>
-        </div>
+            <!-- PDF solo visible para ADMINISTRADOR -->
+            <div class="col-auto ms-auto" sec:authorize="hasRole('ADMINISTRADOR')">
+                <a th:href="@{/productos/pdf(q=${q})}" class="btn btn-success">
+                    <i class="bi bi-filetype-pdf"></i> Descargar PDF
+                </a>
+            </div>
         </form>
     </div>
 
@@ -63,7 +65,8 @@
                 <th>Cantidad</th>
                 <th>Caducidad</th>
                 <th>Ítem Inventario</th>
-                <th>Acciones</th>
+                <!-- Acciones solo para ADMINISTRADOR -->
+                <th sec:authorize="hasRole('ADMINISTRADOR')">Acciones</th>
             </tr>
             </thead>
 
@@ -74,18 +77,19 @@
                 <td th:text="${prod.nombre}">Nombre</td>
                 <td th:text="${prod.descripcion}">Descripción</td>
 
-                <!-- precio: si es numérico Thymeleaf lo imprimirá bien -->
+                <!-- precio -->
                 <td th:text="${prod.precio}">0.00</td>
 
                 <td th:text="${prod.cantidad}">0</td>
 
-                <!-- fecha: usa #temporals.format (permitido) -->
+                <!-- fecha -->
                 <td th:text="${#temporals.format(prod.caducidad, 'yyyy-MM-dd')}">2025-12-31</td>
 
-                <!-- inventario: protegemos null -->
+                <!-- inventario -->
                 <td th:text="${prod.inventario != null ? prod.inventario.nombreProdInve : '-'}">Inv</td>
 
-                <td>
+                <!-- Acciones solo para ADMINISTRADOR -->
+                <td sec:authorize="hasRole('ADMINISTRADOR')">
                     <div class="d-flex gap-2">
                         <a th:href="@{/productos/editar/{id}(id=${prod.idProducto})}"
                            class="btn btn-sm btn-outline-primary" title="Editar">
@@ -107,9 +111,20 @@
         </table>
     </div>
 
-    <a href="/" class="btn btn-secondary mt-3">
-        <i class="bi bi-house-door"></i> Volver al Dashboard
-    </a>
+    <!-- Para usuarios estándar -->
+<a th:href="@{/dashboard/usuario}" 
+   class="btn btn-secondary mt-3" 
+   sec:authorize="hasRole('USUARIO')">
+    <i class="bi bi-house-door"></i> Volver al Dashboard
+</a>
+
+<!-- Para administradores -->
+<a th:href="@{/dashboard}" 
+   class="btn btn-secondary mt-3" 
+   sec:authorize="hasRole('ADMINISTRADOR')">
+    <i class="bi bi-house-door"></i> Volver al Dashboard
+</a>
+
 </div>
 </body>
 </html>

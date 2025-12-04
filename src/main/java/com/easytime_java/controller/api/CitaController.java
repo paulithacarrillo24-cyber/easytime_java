@@ -1,10 +1,13 @@
 package com.easytime_java.controller.api;
 
 import com.easytime_java.model.Cita;
+import com.easytime_java.model.Usuario;
 import com.easytime_java.repository.CitaRepository;
 import com.easytime_java.repository.ServicioRepository;
 import com.easytime_java.repository.UsuarioRepository;
-
+import org.springframework.security.access.prepost.PreAuthorize; // Importar para proteger la ruta
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -100,5 +103,43 @@ public class CitaController {
                 baos.writeTo(response.getOutputStream());
                 response.getOutputStream().flush();
             }
+    }
+
+    @PostMapping
+    public String crearCita(@ModelAttribute Cita cita, Authentication auth) {
+
+        String username = auth.getName();
+        Usuario usuario = usuarioRepository.findByCorreoUser(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+
+        cita.setUsuarioIdUsuario(usuario.getIdUser());
+
+        if (cita.getCreatedAt() == null) {
+            cita.setCreatedAt(LocalDateTime.now());
         }
+
+        citaRepository.save(cita);
+
+        return "redirect:/citas/lista";
+    }
+
+    @PostMapping("/editar/{id}")
+    public String actualizar(@PathVariable Integer id, @ModelAttribute Cita cita) {
+
+        cita.setIdCita(id);
+
+        cita.setUpdateAt(LocalDateTime.now());
+
+        citaRepository.save(cita);
+
+        return "redirect:/citas/lista";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
+
+        citaRepository.deleteById(id);
+
+        return "redirect:/citas/lista";
+    }
 }

@@ -1,52 +1,138 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - EASYTIME</title>
-    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .dashboard-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            border-radius: 12px;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .dashboard-card img {
+            width: 120px; /* imágenes grandes */
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        .welcome-user {
+            color: #0d6efd;
+        }
+        .welcome-admin {
+            color: #ffc107;
+        }
+        .navbar-brand img {
+            height: 40px; /* tamaño del logo */
+            margin-right: 10px;
+        }
+    </style>
 </head>
-
 <body>
 
-    <header>
-        <h2>EASYTIME - Menú Principal</h2>
-        <p>Bienvenido,
-            <span sec:authentication="name">Usuario</span>.
-            <a th:href="@{/logout}">Cerrar Sesión</a>
-        </p>
-    </header>
-
-    <div class="dashboard-grid">
-
-        <a th:href="@{/citas/lista}" class="module-card">
-            <div class="icon">📅</div>
-            <h3>Gestión de Citas</h3>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <div class="container-fluid">
+        <!-- Logo + Texto -->
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+            <img src="/images/logo.png" alt="EASYTIME Logo">
+            <span>EASYTIME</span>
         </a>
+        <div class="d-flex ms-auto">
+            <span class="text-white me-3">
+                Bienvenido, <span sec:authentication="name">Usuario</span>
+            </span>
+            <a th:href="@{/logout}" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
+        </div>
+    </div>
+</nav>
 
-        <a th:href="@{/servicios}" class="module-card">
-            <div class="icon">🛠️</div>
-            <h3>Catálogo de Servicios</h3>
-        </a>
+<!-- CONTENIDO -->
+<div class="container py-5">
 
-        <a th:href="@{/inventarios}" class="module-card">
-            <div class="icon">📦</div>
-            <h3>Inventario</h3>
-        </a>
+    <!-- Título para Usuario -->
+    <h2 class="mb-4 fw-bold text-center welcome-user" sec:authorize="hasRole('USUARIO')">
+        Bienvenido a EASYTIME, tu espacio de gestión
+    </h2>
 
-        <a th:href="@{/productos}" class="module-card">
-            <div class="icon">🏷️</div>
-            <h3>Productos</h3>
-        </a>
 
-        <a th:href="@{/usuarios}" class="module-card" sec:authorize="hasAnyRole('ADMINISTRADOR', 'JEFE_DE_GESTION')">
-            <div class="icon">👥</div>
-            <h3>Lista de Usuarios</h3>
-        </a>
 
+<!-- CONTENIDO -->
+<div class="container py-5">
+
+    <!-- Título para Usuario -->
+    <h2 class="mb-4 fw-bold text-center welcome-user" sec:authorize="hasRole('USUARIO')">
+        Bienvenido a EASYTIME, tu espacio de gestión
+    </h2>
+
+    <!-- Título para Administrador -->
+    <h2 class="mb-4 fw-bold text-center welcome-admin" sec:authorize="hasRole('ADMINISTRADOR')">
+        Panel de Administración EASYTIME
+    </h2>
+
+    <div class="row g-4">
+        <!-- Citas -->
+        <div class="col-md-4">
+            <a th:href="@{/citas/lista}" class="text-decoration-none">
+                <div class="card dashboard-card text-center h-100 p-4">
+                    <img src="/images/citas.png" alt="Citas">
+                    <h5 class="card-title">Gestión de Citas</h5>
+                </div>
+            </a>
         </div>
 
-</body>
+        <!-- Servicios -->
+        <div class="col-md-4">
+            <a th:href="@{/servicios}" class="text-decoration-none">
+                <div class="card dashboard-card text-center h-100 p-4">
+                    <img src="/images/servicios.jpg" alt="Servicios">
+                    <h5 class="card-title">Catálogo de Servicios</h5>
+                </div>
+            </a>
+        </div>
 
+        <!-- Productos -->
+        <div class="col-md-4">
+            <a th:href="@{/productos}" class="text-decoration-none">
+                <div class="card dashboard-card text-center h-100 p-4">
+                    <img src="/images/productos.png" alt="Productos">
+                    <h5 class="card-title">Productos</h5>
+                </div>
+            </a>
+        </div>
+
+        <!-- Inventarios (solo admin) -->
+        <div class="col-md-4" sec:authorize="hasRole('ADMINISTRADOR')">
+            <a th:href="@{/inventarios}" class="text-decoration-none">
+                <div class="card dashboard-card text-center h-100 p-4 bg-dark text-white">
+                    <img src="/images/inventario.png" alt="Inventario">
+                    <h5 class="card-title">Inventario</h5>
+                </div>
+            </a>
+        </div>
+
+        <!-- Usuarios (solo admin/jefe) -->
+        <div class="col-md-4" sec:authorize="hasAnyRole('ADMINISTRADOR','JEFE_DE_GESTION')">
+            <a th:href="@{/usuarios}" class="text-decoration-none">
+                <div class="card dashboard-card text-center h-100 p-4 bg-dark text-white">
+                    <img src="/images/usuarios.png" alt="Usuarios">
+                    <h5 class="card-title">Lista de Usuarios</h5>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

@@ -1,43 +1,112 @@
-/* * Estilos base para el proyecto de Productos. */
+/* ===== Estilos base para el proyecto de Productos ===== */
 
-/* Fuente base para toda la aplicación */
-body { 
-    font-family: 'Inter', sans-serif; 
-    background-color: #f4f7f9; 
-    margin: 0; /* Asegurar que no haya márgenes por defecto */
+/* Fuente base y fondo */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f4f7f9, #e6ecf3);
+    margin: 0;
+    color: #333;
 }
 
-/* Estilo para las tarjetas/contenedores */
-.card { 
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05); 
+/* Títulos */
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4f46e5;
 }
 
-/* Estilo base para campos de entrada, textarea y select */
-.input-style { 
-    width: 100%; /* Ocupa todo el ancho del contenedor */
-    padding: 10px 12px;
+/* Tarjetas / contenedores */
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+/* Inputs, textarea y select */
+.input-style {
+    width: 100%;
+    padding: 12px 14px;
     border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box; /* Asegura que padding no aumente el ancho total */
+    border-radius: 8px;
+    box-sizing: border-box;
     font-size: 1rem;
     line-height: 1.5;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fafafa;
 }
 
-/* Estilo al enfocar los campos de entrada */
-.input-style:focus { 
-    border-color: #4f46e5; 
-    outline: none; /* Quitar el borde de enfoque por defecto del navegador */
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4); /* Sombra de enfoque más visible */
+.input-style:focus {
+    border-color: #4f46e5;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
 }
 
-/* Estilo básico para botones (opcional, para que se vean mejor) */
+/* Textarea */
+textarea.input-style {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Botón principal */
 button[type="submit"] {
     background-color: #4f46e5;
-    color: white;
-    padding: 10px 15px;
+    color: #fff;
+    padding: 12px 20px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #3b36c4;
+    transform: scale(1.05);
+}
+
+/* Botón cancelar */
+a {
+    display: inline-block;
+    margin-left: 15px;
+    text-decoration: none;
+    color: #6c757d;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #4f46e5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
 }

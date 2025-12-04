@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Listado de Servicios</title>
@@ -13,7 +13,7 @@
 
     <div class="card shadow">
 
-        <!-- ====== CABECERA (botón regresar, título, botón Nuevo) ====== -->
+        <!-- ====== CABECERA ====== -->
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <button onclick="history.back()" class="btn btn-secondary text-white fw-bold me-3" title="Regresar">
@@ -23,7 +23,9 @@
             </div>
 
             <div class="d-flex">
-                <a th:href="@{/servicios/nuevo}" class="btn btn-light text-primary fw-bold">
+                <!-- Nuevo Servicio solo visible para ADMINISTRADOR -->
+                <a th:href="@{/servicios/nuevo}" class="btn btn-light text-primary fw-bold"
+                   sec:authorize="hasRole('ADMINISTRADOR')">
                     + Nuevo Servicio
                 </a>
             </div>
@@ -32,13 +34,13 @@
 
         <div class="card-body">
 
-            <!-- ====== ALERTA (guardado) ====== -->
+            <!-- ALERTA -->
             <div th:if="${param.guardado}" class="alert alert-success alert-dismissible fade show" role="alert">
                 ¡Servicio guardado exitosamente!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <!-- ====== BARRA DE FILTRO (igual look que productos/inventarios) ====== -->
+            <!-- FILTRO -->
             <div class="card shadow-sm p-3 mb-4">
                 <form th:action="@{/servicios}" method="get" class="row g-2 align-items-center">
 
@@ -58,8 +60,8 @@
                         </a>
                     </div>
 
-                    <!-- fila nueva: botón PDF alineado a la derecha (igual que productos) -->
-                    <div class="col-12 d-flex justify-content-end mt-2">
+                    <!-- PDF solo visible para ADMINISTRADOR -->
+                    <div class="col-12 d-flex justify-content-end mt-2" sec:authorize="hasRole('ADMINISTRADOR')">
                         <a th:href="@{/servicios/pdf(q=${q})}" class="btn btn-danger">
                             <i class="bi bi-filetype-pdf"></i> Descargar PDF
                         </a>
@@ -69,7 +71,7 @@
             </div>
             <!-- /filtro -->
 
-            <!-- ====== TABLA (misma estructura visual que usaste) ====== -->
+            <!-- TABLA -->
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-striped text-center align-middle mb-0">
                     <thead class="table-dark">
@@ -80,7 +82,8 @@
                             <th>Estado</th>
                             <th>Descripción</th>
                             <th>Precio</th>
-                            <th>Acciones</th>
+                            <!-- Acciones solo para ADMINISTRADOR -->
+                            <th sec:authorize="hasRole('ADMINISTRADOR')">Acciones</th>
                         </tr>
                     </thead>
 
@@ -98,7 +101,8 @@
                             <td th:text="${s.descpServ}"></td>
                             <td th:text="${s.precioServ}"></td>
 
-                            <td>
+                            <!-- Acciones solo para ADMINISTRADOR -->
+                            <td sec:authorize="hasRole('ADMINISTRADOR')">
                                 <a class="btn btn-warning btn-sm me-2"
                                    th:href="@{/servicios/editar/{id}(id=${s.idServicio})}">
                                     Editar
@@ -116,6 +120,13 @@
                 </table>
             </div>
             <!-- /tabla -->
+
+            <!-- Para administradores -->
+            <a th:href="@{/dashboard}" 
+            class="btn btn-secondary mt-3" 
+            sec:authorize="hasRole('ADMINISTRADOR')">
+                <i class="bi bi-house-door"></i> Volver al Dashboard
+            </a>
 
         </div>
         <!-- /card-body -->

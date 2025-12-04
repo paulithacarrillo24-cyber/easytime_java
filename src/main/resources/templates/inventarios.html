@@ -92,6 +92,13 @@
                 </tbody>
             </table>
 
+            <!-- Para administradores -->
+            <a th:href="@{/dashboard}" 
+            class="btn btn-secondary mt-3" 
+            sec:authorize="hasRole('ADMINISTRADOR')">
+                <i class="bi bi-house-door"></i> Volver al Dashboard
+            </a>
+
         </div>
     </div>
 </div>

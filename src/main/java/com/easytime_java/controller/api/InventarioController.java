@@ -90,18 +90,11 @@ public class InventarioController {
 
     @PostMapping("/{id}/editar")
     public String guardarEditar(@PathVariable Integer id, @ModelAttribute Inventario inv) {
-
         inv.setIdInventario(id);
         inv.setUpdateAt(LocalDateTime.now());
 
         inventarioService.guardar(inv);
 
-        return "redirect:/inventarios";
-    }
-
-    @PostMapping("/{id}/eliminar")
-    public String eliminar(@PathVariable Integer id) {
-        inventarioService.eliminar(id);
         return "redirect:/inventarios";
     }
 
@@ -111,69 +104,55 @@ public class InventarioController {
 
     @GetMapping("/pdf")
     public void generarPdf(
-        @RequestParam(value = "q", required = false) String q,
-        HttpServletResponse response) throws Exception {
+            @RequestParam(value = "q", required = false) String q,
+            HttpServletResponse response) throws Exception {
 
-    // 1) obtener datos según filtro
-    List<Inventario> lista = (q == null || q.isBlank()) ? inventarioService.listar() : inventarioService.buscar(q);
+        // 1) obtener datos según filtro
+        List<Inventario> lista = (q == null || q.isBlank()) 
+            ? inventarioService.listar() 
+            : inventarioService.buscar(q);
 
-    // 2) preparar contexto Thymeleaf
-    Context ctx = new Context();
-    ctx.setVariable("inventarios", lista);
-    ctx.setVariable("q", q);
-    ctx.setVariable("fechaActual", LocalDateTime.now());
+        // 2) preparar contexto Thymeleaf
+        Context ctx = new Context();
+        ctx.setVariable("inventarios", lista);
+        ctx.setVariable("q", q);
+        ctx.setVariable("fechaActual", LocalDateTime.now());
 
-    // 3) renderizar plantilla Thymeleaf a HTML (XHTML-compatible)
-    String html = templateEngine.process("inventarios_pdf", ctx);
+        String html = templateEngine.process("inventarios_pdf", ctx);
 
-    // 4) preparar renderer (Flying Saucer + OpenPDF)
-    ITextRenderer renderer = new ITextRenderer();
+        // 3) preparar renderer
+        ITextRenderer renderer = new ITextRenderer();
 
-    // Registrar fuente TTF si la tienes para evitar problemas con acentos
-    try {
-        File fontFile = new File("src/main/resources/fonts/DejaVuSans.ttf");
-        if (!fontFile.exists()) {
-            var res = resourceLoader.getResource("classpath:fonts/DejaVuSans.ttf");
-            if (res.exists()) {
-                File tmp = File.createTempFile("dejavu", ".ttf");
-                try (var is = res.getInputStream(); var os = new java.io.FileOutputStream(tmp)) {
-                    is.transferTo(os);
-                }
-                fontFile = tmp;
+        // (opcional) registrar fuente TTF
+        try {
+            File fontFile = new File("src/main/resources/fonts/DejaVuSans.ttf");
+            if (fontFile.exists()) {
+                ITextFontResolver fontResolver = renderer.getFontResolver();
+                fontResolver.addFont(fontFile.getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             }
+        } catch (Exception ignored) {
+            // si falla, no es crítico
         }
-        if (fontFile.exists()) {
-            ITextFontResolver fontResolver = renderer.getFontResolver();
-            fontResolver.addFont(fontFile.getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        }
-    } catch (Exception ex) {
-        // no falles si no hay fuente, pero acentos podrían mostrarse mal
-        ex.printStackTrace();
-    }
 
-    // 5) configurar baseURL para recursos (css, imgs) si tienes static assets
-    try {
-        String basePath = new File("src/main/resources/static/").toURI().toURL().toString();
-        if (basePath != null && !basePath.isBlank()) {
+        // 4) configurar baseURL para recursos estáticos
+        try {
+            String basePath = new File("src/main/resources/static/").toURI().toURL().toString();
             renderer.getSharedContext().setBaseURL(basePath);
+        } catch (Exception ignored) {
         }
-    } catch (Exception ignored) {
-        // si falla, no es crítico si no usas recursos externos en el PDF
+
+        // 5) generar PDF y enviarlo en la respuesta
+        renderer.setDocumentFromString(html);
+        renderer.layout();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        renderer.createPDF(baos);
+        renderer.finishPDF();
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=inventarios_report.pdf");
+        response.setContentLength(baos.size());
+        baos.writeTo(response.getOutputStream());
+        response.getOutputStream().flush();
     }
-
-    // 6) generar PDF y enviarlo en la respuesta
-    renderer.setDocumentFromString(html);
-    renderer.layout();
-
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    renderer.createPDF(baos);
-    renderer.finishPDF();
-
-    response.setContentType("application/pdf");
-    response.setHeader("Content-Disposition", "attachment; filename=inventarios_report.pdf");
-    response.setContentLength(baos.size());
-    baos.writeTo(response.getOutputStream());
-    response.getOutputStream().flush();
-}
-
 }

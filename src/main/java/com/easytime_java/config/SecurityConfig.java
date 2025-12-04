@@ -62,10 +62,9 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
 
                 // Módulos con acceso restringido por rol
-                .requestMatchers("/citas/**").hasAnyRole("CLIENTE", "ADMINISTRADOR", "JEFE_DE_GESTION")
-                .requestMatchers("/usuarios/**", "/roles/**", "/inventario/**", "/productos/**", "/servicios/**", "/proveedores/**")
-                    .hasAnyRole("ADMINISTRADOR", "JEFE_DE_GESTION")
-
+                .requestMatchers("/citas/**","/servicios/**","/productos/**").hasAnyRole("CLIENTE", "ADMINISTRADOR", "JEFE_DE_GESTION")
+                .requestMatchers("/usuarios/**", "/roles/**", "/inventario/**", "/proveedores/**").hasAnyRole("ADMINISTRADOR", "JEFE_DE_GESTION")
+                
                 // Cualquier otra solicitud requiere autenticación (incluyendo /dashboard)
                 .anyRequest().authenticated()
             )
