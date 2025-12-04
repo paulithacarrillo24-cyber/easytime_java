@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Listado de Servicios</title>
+    <style type="text/css">
+        body { font-family: DejaVu Sans, Arial, sans-serif; font-size: 12px; margin: 20px; }
+        h2 { text-align: center; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #000; padding: 6px; text-align: center; font-size: 11px; }
+        th { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+    <h2>Listado de Servicios</h2>
+
+    <div th:if="${q != null and q != ''}">
+        Filtro: <span th:text="${q}"></span>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Duración</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="s : ${servicios}">
+                <td th:text="${s.idServicio}">1</td>
+                <td th:text="${s.nomServ}">Nombre</td>
+                <td th:text="${s.duracionServ}">30</td>
+                <td>
+                    <span th:if="${s.estServ}">Activo</span>
+                    <span th:unless="${s.estServ}">Inactivo</span>
+                </td>
+                <td th:text="${s.descpServ}">Descripción</td>
+                <td th:text="${s.precioServ}">0.00</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
