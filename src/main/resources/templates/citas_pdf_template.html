@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${titulo}">Reporte de Citas</title>
+    <style>
+        body { font-family: DejaVu Sans, Arial, sans-serif; margin: 20px; }
+        h2 { text-align: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #333; padding: 6px; text-align: center; }
+        th { background: #eee; }
+    </style>
+</head>
+<body>
+
+<h2 th:text="${titulo}">Reporte de Citas</h2>
+<p>Generado el: <span th:text="${#temporals.format(fechaGeneracion, 'dd/MM/yyyy HH:mm')}"></span></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th>Creada</th>
+        <th>Actualizada</th>
+        <th>Servicio</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${citas}">
+        <td th:text="${c.idCita}"></td>
+        <td>
+            <span th:if="${c.estCita}">Activo</span>
+            <span th:unless="${c.estCita}">Inactivo</span>
+        </td>
+        <td th:text="${#temporals.format(c.fechaCita, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${c.updateAt != null ? #temporals.format(c.updateAt, 'yyyy-MM-dd HH:mm') : 'N/A'}"></td>
+        <td th:text="${c.servicio != null ? c.servicio.nomServ : 'Servicio Eliminado'}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

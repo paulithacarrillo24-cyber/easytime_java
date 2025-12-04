@@ -1,20 +1,33 @@
 package com.easytime_java.controller.api;
 
 import com.easytime_java.model.Cita;
-import com.easytime_java.model.Usuario;
 import com.easytime_java.repository.CitaRepository;
 import com.easytime_java.repository.ServicioRepository;
 import com.easytime_java.repository.UsuarioRepository;
-import org.springframework.security.access.prepost.PreAuthorize; // Importar para proteger la ruta
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.ISpringTemplateEngine;
+
+import org.springframework.core.io.ResourceLoader;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletContext;
+
+import org.xhtmlrenderer.pdf.ITextRenderer;
+import org.xhtmlrenderer.pdf.ITextFontResolver;
+import com.lowagie.text.pdf.BaseFont;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
-// Se elimina el import de Collectors ya que el filtro en memoria ya no se necesita
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/citas")
@@ -23,133 +36,69 @@ public class CitaController {
     private final CitaRepository citaRepository;
     private final UsuarioRepository usuarioRepository;
     private final ServicioRepository servicioRepository;
+    private final ISpringTemplateEngine templateEngine;
+    private final ResourceLoader resourceLoader;
+    private final ServletContext servletContext;
 
-    public CitaController(CitaRepository citaRepository, UsuarioRepository usuarioRepository, ServicioRepository servicioRepository) {
+    public CitaController(CitaRepository citaRepository,
+                          UsuarioRepository usuarioRepository,
+                          ServicioRepository servicioRepository,
+                          ISpringTemplateEngine templateEngine,
+                          ResourceLoader resourceLoader,
+                          ServletContext servletContext) {
         this.citaRepository = citaRepository;
         this.usuarioRepository = usuarioRepository;
         this.servicioRepository = servicioRepository;
+        this.templateEngine = templateEngine;
+        this.resourceLoader = resourceLoader;
+        this.servletContext = servletContext;
     }
 
-    // --- MÉTODOS DE FORMULARIO (Se mantienen igual) ---
-
-    @GetMapping("/nueva")
-    public String mostrarFormularioCreacion(Model model) {
-        model.addAttribute("cita", new Cita());
-        model.addAttribute("servicios", servicioRepository.findAll());
-        return "form_cita";
-    }
-
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioEdicion(@PathVariable Integer id, Model model) {
-        Cita cita = citaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID de Cita inválido:" + id));
-
-        model.addAttribute("cita", cita);
-        model.addAttribute("servicios", servicioRepository.findAll());
-
-        return "form_cita";
-    }
-
-    // --- LÓGICA DE LISTADO DE CITAS ACTIVAS (FUTURAS) ---
-
+    // --- LISTADO CON FILTROS SIMPLES ---
     @GetMapping("/lista")
-    public String listarCitas(Model model, Authentication auth) {
-        String username = auth.getName();
-        List<Cita> citas;
-        LocalDateTime now = LocalDateTime.now();
+        public String listarCitas(Model model,
+                                @RequestParam Optional<Boolean> estado) {
 
-        // 1. Verificar si el usuario es Administrador (para habilitar la vista de Historial)
-        boolean esAdmin = auth.getAuthorities().stream()
-                              .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            List<Cita> citas = citaRepository.findAll().stream()
+                .filter(c -> estado.map(e -> c.getEstCita() != null && c.getEstCita().equals(e)).orElse(true))
+                .collect(Collectors.toList());
 
-        model.addAttribute("esAdmin", esAdmin); // Pasar el rol a la vista
-        model.addAttribute("titulo", "Citas Próximas (Activas)"); // Título para la vista
+            model.addAttribute("citas", citas);
+            model.addAttribute("f_estado", estado.orElse(null));
 
-        if (esAdmin) {
-            // Lógica para el Administrador: Mostrar TODAS las citas FUTURAS
-            citas = citaRepository.findByFechaCitaAfterOrderByFechaCitaAsc(now);
-            System.out.println("DEBUG: Mostrando TODAS las citas FUTURAS (ADMIN). Total: " + citas.size());
-        } else {
-            // Lógica para Cliente y Jefe de Patio: Mostrar solo sus citas FUTURAS
-            Usuario usuario = usuarioRepository.findByCorreoUser(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
-
-            // ⭐ CORRECCIÓN DE EFICIENCIA: Uso del método combinado en el repositorio
-            citas = citaRepository.findByUsuarioIdUsuarioAndFechaCitaAfterOrderByFechaCitaAsc(usuario.getIdUser(), now);
-
-            System.out.println("DEBUG: Mostrando citas personales FUTURAS. Total: " + citas.size());
+            return "citas";
         }
 
-        model.addAttribute("citas", citas);
-        return "Citas";
-    }
 
-    // --- NUEVA LÓGICA PARA HISTORIAL (SOLO ADMIN) ---
 
-    @GetMapping("/historial")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')") // Proteger la ruta solo para el Administrador
-    public String listarHistorialCitas(Model model) {
+    // --- GENERAR PDF CON LOS MISMOS FILTROS ---
+    @GetMapping("/pdf")
+        public void generarPdf(@RequestParam Optional<Boolean> estado,
+                            HttpServletResponse response) throws Exception {
 
-        LocalDateTime now = LocalDateTime.now();
+            List<Cita> citas = citaRepository.findAll().stream()
+                .filter(c -> estado.map(e -> c.getEstCita() != null && c.getEstCita().equals(e)).orElse(true))
+                .collect(Collectors.toList());
 
-        // Obtener TODAS las citas con fecha PASADA (Historial)
-        List<Cita> citas = citaRepository.findByFechaCitaBeforeOrderByFechaCitaDesc(now);
+            Context ctx = new Context();
+            ctx.setVariable("citas", citas);
+            ctx.setVariable("titulo", "Reporte de Citas");
+            ctx.setVariable("fechaGeneracion", LocalDateTime.now());
 
-        model.addAttribute("citas", citas);
-        model.addAttribute("esAdmin", true);
-        model.addAttribute("titulo", "Historial de Citas (Pasadas)");
-        return "Citas"; // Reutilizamos la misma plantilla Citas.html
-    }
+            String html = templateEngine.process("citas_pdf_template", ctx);
+            ITextRenderer renderer = new ITextRenderer();
+            renderer.setDocumentFromString(html, "file:///" + servletContext.getRealPath("/"));
+            renderer.layout();
 
-    // --- OTROS MÉTODOS (Se mantienen igual) ---
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                renderer.createPDF(baos);
+                renderer.finishPDF();
 
-    @GetMapping
-    public String redireccionarALista() {
-        return "redirect:/citas/lista";
-    }
-
-    @GetMapping("/{id}")
-    public String obtenerPorId(@PathVariable Integer id, Model model) {
-        Cita cita = citaRepository.findById(id).orElse(null);
-        model.addAttribute("cita", cita);
-        return "detalle_cita";
-    }
-
-    @PostMapping
-    public String crearCita(@ModelAttribute Cita cita, Authentication auth) {
-
-        String username = auth.getName();
-        Usuario usuario = usuarioRepository.findByCorreoUser(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
-
-        cita.setUsuarioIdUsuario(usuario.getIdUser());
-
-        if (cita.getCreatedAt() == null) {
-            cita.setCreatedAt(LocalDateTime.now());
+                response.setContentType("application/pdf");
+                response.setHeader("Content-Disposition", "attachment; filename=reporte_citas.pdf");
+                response.setContentLength(baos.size());
+                baos.writeTo(response.getOutputStream());
+                response.getOutputStream().flush();
+            }
         }
-
-        citaRepository.save(cita);
-
-        return "redirect:/citas/lista";
-    }
-
-    @PostMapping("/editar/{id}")
-    public String actualizar(@PathVariable Integer id, @ModelAttribute Cita cita) {
-
-        cita.setIdCita(id);
-
-        cita.setUpdateAt(LocalDateTime.now());
-
-        citaRepository.save(cita);
-
-        return "redirect:/citas/lista";
-    }
-
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Integer id) {
-
-        citaRepository.deleteById(id);
-
-        return "redirect:/citas/lista";
-    }
 }
