@@ -30,4 +30,8 @@ public class InventarioService {
     public void eliminar(Integer id) {
         repo.deleteById(id);
     }
+
+    public List<Inventario> buscar(String q) {
+        return repo.buscar(q.toLowerCase());
+    }
 }

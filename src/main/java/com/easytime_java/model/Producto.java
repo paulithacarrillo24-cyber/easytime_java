@@ -1,8 +1,19 @@
 package com.easytime_java.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "productos")
@@ -32,7 +43,7 @@ public class Producto {
     private String cantidad;
     
     // ⭐ CAMBIO AÑADIDO
-    @Column(name = "url_imagen", length = 255) // Debe coincidir con la columna SQL
+    @Column(name = "url_imagen", nullable = true, length = 255) // Debe coincidir con la columna SQL
     private String urlImagen; 
     // ⭐ FIN CAMBIO AÑADIDO
 

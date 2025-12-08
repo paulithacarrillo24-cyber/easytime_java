@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Listado de Servicios</title>
@@ -12,74 +12,131 @@
 <div class="container mt-5">
 
     <div class="card shadow">
-        
+
+        <!-- ====== CABECERA ====== -->
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            
             <div class="d-flex align-items-center">
-                
                 <button onclick="history.back()" class="btn btn-secondary text-white fw-bold me-3" title="Regresar">
-                    <i class="bi bi-arrow-left"></i> 
+                    <i class="bi bi-arrow-left"></i>
                 </button>
-                
                 <h3 class="m-0">Lista de Servicios</h3>
             </div>
-            
+
             <div class="d-flex">
-                <a th:href="@{/servicios/nuevo}" class="btn btn-light text-primary fw-bold" th:if="${#authorization.expression('hasRole(''Administrador'')')}">
+                <!-- Nuevo Servicio solo visible para ADMINISTRADOR -->
+                <a th:href="@{/servicios/nuevo}" class="btn btn-light text-primary fw-bold"
+                   sec:authorize="hasRole('ADMINISTRADOR')">
                     + Nuevo Servicio
                 </a>
             </div>
-            
         </div>
+        <!-- /cabecera -->
+
         <div class="card-body">
-            
+
+            <!-- ALERTA -->
             <div th:if="${param.guardado}" class="alert alert-success alert-dismissible fade show" role="alert">
                 ¡Servicio guardado exitosamente!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            
-            <table class="table table-bordered table-hover table-striped text-center align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Duración</th>
-                        <th>Estado</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th th:if="${#authorization.expression('hasRole(''Administrador'')')}">Acciones</th>
-                    </tr>
-                </thead>
 
-                <tbody>
-                    <tr th:each="s : ${servicios}">
-                        <td th:text="${s.idServicio}"></td> 
-                        <td th:text="${s.nomServ}"></td> 
-                        <td th:text="${s.duracionServ}"></td> 
-                        
-                        <td>
-                            <span th:if="${s.estServ}" class="badge bg-success">Activo</span>
-                            <span th:unless="${s.estServ}" class="badge bg-danger">Inactivo</span>
-                        </td>
-                        
-                        <td th:text="${s.descpServ}"></td> 
-                        <td th:text="${s.precioServ}"></td> 
-                        
-                        <td th:if="${#authorization.expression('hasRole(''Administrador'')')}">
-                            <a class="btn btn-warning btn-sm" th:href="@{/servicios/editar/{id}(id=${s.idServicio})}">Editar</a>
-                            <a class="btn btn-danger btn-sm" th:href="@{/servicios/eliminar/{id}(id=${s.idServicio})}" onclick="return confirm('¿Seguro que deseas eliminar este servicio?')">Eliminar</a>
-                        </td>
-                    </tr>
-                </tbody>
+            <!-- FILTRO -->
+            <div class="card shadow-sm p-3 mb-4">
+                <form th:action="@{/servicios}" method="get" class="row g-2 align-items-center">
 
-            </table>
-            
+                    <div class="col-md-6">
+                        <input type="search" name="q" class="form-control"
+                               placeholder="Buscar servicio (nombre, descripción, duración, precio...)"
+                               th:value="${q}">
+                    </div>
+
+                    <div class="col-md-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+
+                        <a th:href="@{/servicios}" class="btn btn-secondary w-100" title="Limpiar filtro">
+                            <i class="bi bi-x-circle"></i>
+                        </a>
+                    </div>
+
+                    <!-- PDF solo visible para ADMINISTRADOR -->
+                    <div class="col-12 d-flex justify-content-end mt-2" sec:authorize="hasRole('ADMINISTRADOR')">
+                        <a th:href="@{/servicios/pdf(q=${q})}" class="btn btn-danger">
+                            <i class="bi bi-filetype-pdf"></i> Descargar PDF
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+            <!-- /filtro -->
+
+            <!-- TABLA -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped text-center align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Duración</th>
+                            <th>Estado</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <!-- Acciones solo para ADMINISTRADOR -->
+                            <th sec:authorize="hasRole('ADMINISTRADOR')">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="s : ${servicios}">
+                            <td th:text="${s.idServicio}"></td>
+                            <td th:text="${s.nomServ}"></td>
+                            <td th:text="${s.duracionServ}"></td>
+
+                            <td>
+                                <span th:if="${s.estServ}" class="badge bg-success">Activo</span>
+                                <span th:unless="${s.estServ}" class="badge bg-danger">Inactivo</span>
+                            </td>
+
+                            <td th:text="${s.descpServ}"></td>
+                            <td th:text="${'$' + #numbers.formatDecimal(s.precioServ, 1, 'POINT', 2, 'COMMA')}"></td>
+                            <!--<td th:text="${s.precioServ}"></td>>-->
+
+                            <!-- Acciones solo para ADMINISTRADOR -->
+                            <td sec:authorize="hasRole('ADMINISTRADOR')">
+                                <a class="btn btn-warning btn-sm me-2"
+                                   th:href="@{/servicios/editar/{id}(id=${s.idServicio})}">
+                                    Editar
+                                </a>
+
+                                <form th:action="@{/servicios/eliminar/{id}(id=${s.idServicio})}"
+                                      method="post"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('¿Seguro que deseas eliminar este servicio?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /tabla -->
+
+            <!-- Para administradores -->
+            <a th:href="@{/dashboard}" 
+            class="btn btn-secondary mt-3" 
+            sec:authorize="hasRole('ADMINISTRADOR')">
+                <i class="bi bi-house-door"></i> Volver al Dashboard
+            </a>
+
         </div>
+        <!-- /card-body -->
     </div>
+    <!-- /card -->
+
 </div>
+<!-- /container -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
-
 </html>

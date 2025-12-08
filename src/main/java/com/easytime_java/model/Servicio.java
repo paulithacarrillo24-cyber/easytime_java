@@ -1,5 +1,6 @@
 package com.easytime_java.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 // Importaciones de Spring Data para Auditoría (correctas)
@@ -18,6 +19,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;// Para que las validaciones funcionen
 
 @Entity
 @Table(name = "servicio")
@@ -47,8 +49,10 @@ public class Servicio {
     @Column(name = "DESCP_SERV", nullable = false)
     private String descpServ;
 
-    @Column(name = "PRECIO_SERV", nullable = false)
-    private String precioServ;
+    //@DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
+    //@Digits(integer = 8, fraction = 2, message = "Formato de precio inválido")
+    @Column(name = "PRECIO_SERV", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precioServ;
 
     // 4. Auditoría de Creación
     @CreatedDate

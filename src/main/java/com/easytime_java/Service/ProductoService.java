@@ -3,7 +3,9 @@ package com.easytime_java.Service;
 import com.easytime_java.model.Producto;
 import com.easytime_java.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Locale;
 
 
 @Service
@@ -46,4 +48,13 @@ public class ProductoService {
     public void eliminar(Integer id) {
         repo.deleteById(id);
     }
+
+    public List<Producto> buscar(String q) {
+    if (q == null || q.isBlank()) {
+        return repo.findAllWithInventario();
+    }
+    // normalizar a minúsculas para la consulta
+    String term = q.trim().toLowerCase(Locale.ROOT);
+    return repo.buscarPorTermino(term);
+}
 }

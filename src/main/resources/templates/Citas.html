@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="${titulo != null ? titulo : 'Listado de Citas'}">Listado de Citas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 
@@ -14,35 +13,59 @@
 
     <div class="card shadow">
         
+        <!-- HEADER -->
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             
             <div class="d-flex align-items-center">
-                
                 <button onclick="history.back()" class="btn btn-secondary text-white fw-bold me-3">
                     <i class="bi bi-arrow-left"></i> 
                 </button>
-                
                 <h3 class="m-0" th:text="${titulo}">Mis Citas</h3>
             </div>
+
             <div class="d-flex">
                 <a th:href="@{/citas/nueva}" class="btn btn-light text-primary fw-bold me-3">+ Nueva Cita</a>
                 
-                <th:block th:if="${esAdmin}">
+                <!-- Botones de historial solo para admin -->
+                <div sec:authorize="hasRole('ADMINISTRADOR')">
                     <a th:if="${titulo != 'Historial de Citas (Pasadas)'}"
-                       th:href="@{/citas/historial}" 
+                       th:href="@{/citas/historial}"  
                        class="btn btn-warning text-dark fw-bold">
                         Ver Historial (Pasadas)
                     </a>
                     <a th:if="${titulo == 'Historial de Citas (Pasadas)'}"
-                       th:href="@{/citas/lista}" 
+                       th:href="@{/citas/lista}"  
                        class="btn btn-info text-white fw-bold">
                         Ver Próximas Citas
                     </a>
-                </th:block>
+                </div>
             </div>
-            </div>
+        </div>
+
         <div class="card-body">
 
+            <!-- BARRA DE FILTROS -->
+            <form class="row g-3 mb-3" method="get" th:action="@{/citas/lista}">
+                <div class="col-md-3">
+                    <select class="form-select" name="estado">
+                        <option value="">Todos los Estados</option>
+                        <option value="true" th:selected="${f_estado == true}">Activo</option>
+                        <option value="false" th:selected="${f_estado == false}">Inactivo</option>
+                    </select>
+                </div>
+
+                <!-- Bloque de botones alineado a la derecha -->
+                <div class="col-md-3 ms-auto d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-2">Filtrar</button>
+                    <!-- PDF solo visible para ADMINISTRADOR -->
+                    <a th:href="@{/citas/pdf(estado=${f_estado})}" class="btn btn-danger"
+                       sec:authorize="hasRole('ADMINISTRADOR')">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </a>
+                </div>
+            </form>
+
+            <!-- TABLA -->
             <table class="table table-bordered table-hover table-striped text-center align-middle">
                 <thead class="table-dark">
                 <tr>
@@ -59,40 +82,40 @@
                 <tbody>
                 <tr th:each="c : ${citas}">
                     <td th:text="${c.idCita}"></td>
-                    
                     <td>
                         <span th:if="${c.estCita}" class="badge bg-success">Activo</span>
                         <span th:unless="${c.estCita}" class="badge bg-danger">Inactivo</span>
                     </td>
-                    
                     <td th:text="${#temporals.format(c.fechaCita, 'yyyy-MM-dd HH:mm')}"></td>
                     <td th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-                    
                     <td th:text="${c.updateAt != null ? #temporals.format(c.updateAt, 'yyyy-MM-dd HH:mm') : 'N/A'}"></td>
-                    
-                    <td th:text="${c.servicio != null ? c.servicio.nomServ : 'Servicio Eliminado'}">Nombre del Servicio</td>
-
+                    <td th:text="${c.servicio != null ? c.servicio.nomServ : 'Servicio Eliminado'}"></td>
                     <td>
+                        <!-- Ver siempre visible -->
                         <a class="btn btn-info btn-sm text-white"
-                           th:href="@{/citas/{id}(id=${c.idCita})}">
-                            Ver
-                        </a>
+                           th:href="@{/citas/{id}(id=${c.idCita})}">Ver</a>
 
+                        <!-- Editar solo visible para ADMINISTRADOR -->
                         <a class="btn btn-warning btn-sm"
-                           th:href="@{/citas/editar/{id}(id=${c.idCita})}">
-                            Editar
-                        </a>
+                           th:href="@{/citas/editar/{id}(id=${c.idCita})}"
+                           sec:authorize="hasRole('ADMINISTRADOR')">Editar</a>
 
+                        <!-- Eliminar solo visible para ADMINISTRADOR -->
                         <a class="btn btn-danger btn-sm"
                            th:href="@{/citas/eliminar/{id}(id=${c.idCita})}"
-                           onclick="return confirm('¿Seguro que deseas eliminar esta cita?')">
-                            Eliminar
-                        </a>
+                           sec:authorize="hasRole('ADMINISTRADOR')"
+                           onclick="return confirm('¿Seguro que deseas eliminar esta cita?')">Eliminar</a>
                     </td>
                 </tr>
                 </tbody>
-
             </table>
+
+            <!-- Para administradores -->
+            <a th:href="@{/dashboard}" 
+            class="btn btn-secondary mt-3" 
+            sec:authorize="hasRole('ADMINISTRADOR')">
+                <i class="bi bi-house-door"></i> Volver al Dashboard
+            </a>
 
         </div>
     </div>

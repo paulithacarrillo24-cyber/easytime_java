@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Reporte de Productos</title>
+
+    <style type="text/css">
+        body { font-family: Arial, sans-serif; font-size: 12px; }
+        h2 { text-align: center; color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #666; padding: 6px; text-align: left; }
+        th { background-color: #ddd; }
+    </style>
+</head>
+<body>
+
+<h2>Reporte de Productos</h2>
+
+<p th:if="${q != null}">
+    <strong>Filtro aplicado:</strong> <span th:text="${q}"></span>
+</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Código</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Caducidad</th>
+        <th>Inventario</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="prod : ${productos}">
+        <td th:text="${prod.idProducto}"></td>
+        <td th:text="${prod.codigo}"></td>
+        <td th:text="${prod.nombre}"></td>
+        <td th:text="${prod.precio}"></td>
+        <td th:text="${prod.cantidad}"></td>
+        <td th:text="${#temporals.format(prod.caducidad, 'yyyy-MM-dd')}"></td>
+        <td th:text="${prod.inventario.nombreProdInve}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

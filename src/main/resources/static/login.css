@@ -46,7 +46,7 @@ body {
 
 /* Estilo al pasar el ratón sobre los enlaces de navegación */
 .header .nav-links a:hover {
-    color: #007bff; /* Color azul al pasar por encima*/
+    color: #459fe9; /* Color azul al pasar por encima*/
 }
 
 /* --- Contenido Principal (login-container) --- */
@@ -102,14 +102,14 @@ body {
 /* Estilos al enfocar (hacer clic) en campos de texto */
 .login-box input[type="text"]:focus,
 .login-box input[type="password"]:focus {
-    border-color: #007bff; /* Borde azul */
+    border-color: #459fe9; /* Borde azul */
     outline: none; /* Elimina el contorno por defecto del navegador */
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Sombra de enfoque suave */
 }
 
 /* Estilos para el botón de envío (Ingresar) */
 .login-box button[type="submit"] {
-    background-color: #007bff; /* Fondo azul */
+    background-color: #459fe9; /* Fondo azul */
     color: white;
     padding: 12px 25px;
     border: none;
