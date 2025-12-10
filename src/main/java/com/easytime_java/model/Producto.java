@@ -43,8 +43,8 @@ public class Producto {
     private String cantidad;
     
     // ⭐ CAMBIO AÑADIDO
-    @Column(name = "url_imagen", nullable = true, length = 255) // Debe coincidir con la columna SQL
-    private String urlImagen; 
+    @Column(name = "URL_IMAGEN", nullable = true, length = 255) // Debe coincidir con la columna SQL
+    private String urlImagen;
     // ⭐ FIN CAMBIO AÑADIDO
 
     @Column(name = "CREATED_AT", nullable = false, updatable = false)

@@ -18,6 +18,9 @@
             <input type="hidden" th:field="*{idProducto}" />
             <input type="hidden" th:field="*{createdAt}" />
             <input type="hidden" th:field="*{updatedAt}" />
+            
+            <!-- Campo oculto para conservar la imagen al editar un producto y no se quiere agregar imagen en este-->
+            <input type="hidden" th:field="*{urlImagen}" />
 
             <div>
                 <label>Código:</label><br>
