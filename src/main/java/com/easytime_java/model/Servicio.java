@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.validation.constraints.*; // Para que las validaciones funcionen
+//import jakarta.validation.constraints.*; // Para que las validaciones funcionen
 
 @Entity
 @Table(name = "servicio")
